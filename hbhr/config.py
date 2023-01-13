@@ -23,4 +23,18 @@ class Config(dict):
 
     # Directory where to store the log file - best if full path
     LOG_DIR = 'logs'
+    
+    # MAIL_SERVER - 'mail.carbld.com' on local machines and 'localhost' on the server
+    MAIL_SERVER = 'mail.carbld.com'
 
+    # MAIL settings - use SSL instead of TLS, port 465, put user and pass in env var
+    MAIL_PORT = 465
+    MAIL_USE_TLS = False
+    MAIL_USE_SSL = True
+    MAIL_DEBUG = False
+    MAIL_USERNAME = os.environ.get('EMAIL_USER')
+    MAIL_PASSWORD = os.environ.get('EMAIL_PASS')
+    MAIL_DEFAULT_SENDER = ('Carbld Support', 'support@carbld.com')
+
+    # Directory where to store the log file - best if full path
+    LOG_DIR = ''
