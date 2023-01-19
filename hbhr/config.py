@@ -22,7 +22,7 @@ class Config(dict):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # Directory where to store the log file - best if full path
-    LOG_DIR = 'logs'
+    LOG_DIR = './logs'
     
     # MAIL_SERVER - 'mail.carbld.com' on local machines and 'localhost' on the server
     MAIL_SERVER = 'mail.carbld.com'
