@@ -36,11 +36,14 @@ csp = {
         '*.cloudflare.com',
         '*.googleapis.com',
         'https://bulma.io',
+        'https://fonts.gstatic.com',
         'https://unpkg.com'
     ],
     'style-src': ['\'self\'',
-        # "'unsafe-inline'",
+        "'unsafe-inline'",
+        'sha256-d7rFBVhb3n/Drrf+EpNWYdITkos3kQRFpB0oSOycXg4=',
         'https://bulma.io',
+        'https://fonts.googleapis.com',
         '*.cloudflare.com'
     ],
     'script-src': ['\'self\'',
@@ -59,11 +62,11 @@ def create_app(config_class=Config):
 
     # create a logger for the main app
     log = logging.getLogger(__name__)
-    log.setLevel(logging.DEBUG)
+    log.setLevel(logging.INFO)
 
     # create a file handler
-    file_handler = logging.FileHandler(filename=f'{log_dir}/hbhr-{datetime.datetime.now().strftime("%Y-%m")}.log')
-    file_handler.setLevel(logging.DEBUG)
+    file_handler = logging.FileHandler(filename=f'{log_dir}hbhr-{datetime.datetime.now().strftime("%Y-%m")}.log')
+    file_handler.setLevel(logging.INFO)
 
     # create a formatter
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -72,13 +75,15 @@ def create_app(config_class=Config):
     # add the file handler to the logger
     log.addHandler(file_handler)
 
+    logging.info('Logging set up!')
+
 
     db.init_app(app)
 
     migrate.init_app(app, db)
             
     bcrypt.init_app(app)
-    login_manager.init_app(app)
+    #login_manager.init_app(app)
     talisman.init_app(app, content_security_policy=csp)
 
     from hbhr.users.routes import users

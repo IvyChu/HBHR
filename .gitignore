@@ -3,4 +3,5 @@ hbhr/Include/
 hbhr/Scripts/
 hbhr/config.py
 __pycache__/
-.vscode/launch.json
+.vscode/
+logs/

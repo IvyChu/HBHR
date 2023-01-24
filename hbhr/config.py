@@ -16,13 +16,13 @@ class Config(dict):
     SECRET_KEY = os.environ.get('SECRET_KEY')
 
     # SQLALCHEMY_DATABASE_URI - this should be stored in the environment variable for security reasons
-    SQLALCHEMY_DATABASE_URI = os.environ.get('HBHR_SQLALCHEMY_DATABASE_URI')
+    SQLALCHEMY_DATABASE_URI = os.environ.get('HBHR_DB')
 
     # SQLALCHEMY_TRACK_MODIFICATIONS - disabled to save resources
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # Directory where to store the log file - best if full path
-    LOG_DIR = './logs'
+    LOG_DIR = 'logs\\'
     
     # MAIL_SERVER - 'mail.carbld.com' on local machines and 'localhost' on the server
     MAIL_SERVER = 'mail.carbld.com'
@@ -34,7 +34,4 @@ class Config(dict):
     MAIL_DEBUG = False
     MAIL_USERNAME = os.environ.get('EMAIL_USER')
     MAIL_PASSWORD = os.environ.get('EMAIL_PASS')
-    MAIL_DEFAULT_SENDER = ('Carbld Support', 'support@carbld.com')
-
-    # Directory where to store the log file - best if full path
-    LOG_DIR = ''
+    MAIL_DEFAULT_SENDER = ('Homebirth Support Hampton Roads', 'support@carbld.com')

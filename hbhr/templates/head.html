@@ -1,0 +1,22 @@
+<head>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.ico') }}" type="image/icon type">
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+
+    {% if title %}
+    <title>Homebirth Support Hampton Roads | {{ title }}</title>
+    {% else %}
+    <title>Homebirth Support Hampton Roads</title>
+    {% endif %}
+
+    <script src="https://unpkg.com/hyperscript.org@0.9.7" integrity="sha384-6GYN8BDHOJkkru6zcpGOUa//1mn+5iZ/MyT6mq34WFIpuOeLF52kSi721q0SsYF9" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/htmx.org@1.8.4" integrity="sha384-wg5Y/JwF7VxGk4zLsJEcAojRtlVp1FKKdGy1qN+OMtdq72WRvX/EdRdqg/LOhYeV" crossorigin="anonymous"></script>
+</head>
