@@ -53,20 +53,21 @@ csp = {
     ]
 }
 
+# create a logger for the main app
+log = logging.getLogger(__name__)
+
 
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(Config)
 
+    # more settings for logger
     log_dir = app.config['LOG_DIR']
-
-    # create a logger for the main app
-    log = logging.getLogger(__name__)
-    log.setLevel(logging.INFO)
+    log.setLevel(logging.DEBUG)
 
     # create a file handler
     file_handler = logging.FileHandler(filename=f'{log_dir}hbhr-{datetime.datetime.now().strftime("%Y-%m")}.log')
-    file_handler.setLevel(logging.INFO)
+    file_handler.setLevel(logging.DEBUG)
 
     # create a formatter
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -75,7 +76,9 @@ def create_app(config_class=Config):
     # add the file handler to the logger
     log.addHandler(file_handler)
 
-    logging.info('Logging set up!')
+    log.info('Logging set up!')
+
+    log.debug(f"{app.config['SQLALCHEMY_DATABASE_URI']}")
 
 
     db.init_app(app)
