@@ -5,3 +5,5 @@ hbhr/Scripts/
 __pycache__/
 .vscode/
 logs/
+styles/test.html
+hbhr/static/profile_pics/*.jpg

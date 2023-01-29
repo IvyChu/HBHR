@@ -25,8 +25,8 @@ class User(db.Model, UserMixin):
     last_active = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     # things specifically belonging to this user:
-    posts = db.relationship('Post', backref='author', lazy=True)
-    imgs = db.relationship('Picture', backref='author', lazy=True)
+    # posts = db.relationship('Post', backref='author', lazy=True)
+    # imgs = db.relationship('Picture', backref='author', lazy=True)
 
     def set_password(self, password):
         self.password = bcrypt.generate_password_hash(password).decode('utf-8')

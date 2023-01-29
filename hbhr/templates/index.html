@@ -1,122 +1,166 @@
-{% extends "layout.html" %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block content %}
-<section role="main" class="section">
+{% include 'head.html' %}
 
-    <div class="container">
-        <div class="has-text-centered content"><h3 class="title is-3">Directory of services</h3>
-        <hr>
-        <p>
-            This page lists homebirth related services available in Hampton Roads area. 
-        </p>
-        <br><br>
+<body>
+
+    <!-- Header for big screen -->
+    <section>
+        {% include 'navbar.html' %}
+        <div class="hero is-primary is-small is-hidden-mobile">
+            <div class="hero-body">
+                <br><br>
+                <div class="container has-text-centered">
+                    <h1 class="title is-1 is-family-secondary pb-3">
+                        Homebirth Support Hampton Roads
+                    </h1>
+                    <h2 class="subtitle is-5 is-uppercase ">
+                        Helping families find the best way to bring their babies into the world
+                    </h2>
+                </div>
+                <br><br>
+            </div>
         </div>
-        <div id="categories" class="columns is-multiline">
-            <div class="column is-one-third-desktop is-half-tablet">
-                <div class="block has-text-centered">
-            
-                    <h5 class="subtitle is-5">
-                        Midwifery
-                    </h5>
-                    <hr>
-                    <div class="content">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                         Interdum velit euismod in pellentesque. Velit scelerisque in dictum non.
-                        
-                    </div>
-                    <a href="#" class="button is-primary is-outlined is-rounded">List providers</a>
-                </div>
-                <br>
-            </div>
-            <div class="column is-one-third-desktop is-half-tablet">
-                <div class="block has-text-centered">
-            
-                    <h5 class="subtitle is-5">
-                        Childbirth education
-                    </h5>
-                    <hr>
-                    <div class="content">
-                        Quam vulputate dignissim suspendisse in est ante. Aliquam etiam erat velit 
-                        scelerisque in dictum. Scelerisque purus semper eget duis at tellus at urna condimentum. 
-                        Iaculis nunc sed augue lacus. Ipsum dolor sit amet consectetur adipiscing. 
-                        Vitae tortor condimentum lacinia quis vel eros donec ac odio. Interdum varius sit amet mattis. 
-                        Ullamcorper velit sed ullamcorper morbi tincidunt ornare massa eget.
-                        
-                    </div>
-                    <a href="#" class="button is-primary is-outlined is-rounded">List providers</a>
-                </div>
-                <br>
-            </div>
-            <div class="column is-one-third-desktop is-half-tablet">
-                <div class="block has-text-centered">
-            
-                    <h5 class="subtitle is-5">
-                        Yoga
-                    </h5>
-                    <hr>
-                    <div class="content">
-                        Dignissim cras tincidunt lobortis feugiat. Cursus metus aliquam eleifend mi in nulla. 
-                        Risus pretium quam vulputate dignissim suspendisse. Sollicitudin ac orci phasellus egestas 
-                        tellus rutrum tellus. Et tortor consequat id porta nibh venenatis. Vitae tortor condimentum 
-                        lacinia quis vel. A diam maecenas sed enim ut sem viverra aliquet eget. Adipiscing elit ut aliquam purus sit amet. 
-                        
-                    </div>
-                    <a href="#" class="button is-primary is-outlined is-rounded">List providers</a>
-                </div>
-                <br>
-            </div>
-            <div class="column is-one-third-desktop is-half-tablet">
-                <div class="block has-text-centered">
-            
-                    <h5 class="subtitle is-5">
-                        Massage
-                    </h5>
-                    <hr>
-                    <div class="content">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.
-                        
-                    </div>
-                    <a href="#" class="button is-primary is-outlined is-rounded">List providers</a>
-                </div>
-                <br>
-            </div>
-            <div class="column is-one-third-desktop is-half-tablet">
-                <div class="block has-text-centered">
-            
-                    <h5 class="subtitle is-5">
-                        Doula
-                    </h5>
-                    <hr>
-                    <div class="content">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.
-                        
-                    </div>
-                    <a href="#" class="button is-primary is-outlined is-rounded">List providers</a>
-                </div>
-                <br>
-            </div>
-            <div class="column is-one-third-desktop is-half-tablet">
-                <div class="block has-text-centered">
-            
-                    <h5 class="subtitle is-5">
-                        Chiropractic
-                    </h5>
-                    <hr>
-                    <div class="content">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.
-                        
-                    </div>
-                    <a href="#" class="button is-primary is-outlined is-rounded">List providers</a>
+        <!-- Header for phone screen-->
+        <div class="hero is-primary is-small is-hidden-tablet">
+            <br>
+            <div class="hero-body">
+                <div class="container has-text-centered">
+                    <h1 class="title is-3 is-family-secondary pb-3">
+                        Homebirth Support Hampton Roads
+                    </h1>
+                    <h2 class="subtitle is-6 is-uppercase">
+                        Helping families find the best way to bring their babies into the world
+                    </h2>
                 </div>
                 <br>
             </div>
         </div>
+    </section>
+    <section class="section">
+        <div class="container">
+            <div class="has-text-centered content">
+                <h3 class="title is-3 is-uppercase">Directory of services</h3>
+                <hr>
+                <p>
+                    This page lists homebirth related services available in Hampton Roads area.
+                </p>
+                <br><br>
+            </div>
+            <div id="categories" class="columns is-multiline">
+                <div class="column is-one-third-desktop is-half-tablet">
+                    <div class="block has-text-centered">
 
-    </div>
+                        <h5 class="subtitle is-5 is-uppercase">
+                            Midwifery
+                        </h5>
+                        <hr>
+                        <div class="content">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                            Interdum velit euismod in pellentesque. Velit scelerisque in dictum non.
 
-</section>
-{% endblock content %}
+                        </div>
+                        <a href="#" class="button is-primary is-outlined is-rounded">List providers</a>
+                    </div>
+                    <br>
+                </div>
+                <div class="column is-one-third-desktop is-half-tablet">
+                    <div class="block has-text-centered">
+
+                        <h5 class="subtitle is-5 is-uppercase">
+                            Childbirth education
+                        </h5>
+                        <hr>
+                        <div class="content">
+                            Quam vulputate dignissim suspendisse in est ante. Aliquam etiam erat velit
+                            scelerisque in dictum. Scelerisque purus semper eget duis at tellus at urna condimentum.
+                            Iaculis nunc sed augue lacus. Ipsum dolor sit amet consectetur adipiscing.
+                            Vitae tortor condimentum lacinia quis vel eros donec ac odio. Interdum varius sit amet
+                            mattis.
+                            Ullamcorper velit sed ullamcorper morbi tincidunt ornare massa eget.
+
+                        </div>
+                        <a href="#" class="button is-primary is-outlined is-rounded">List providers</a>
+                    </div>
+                    <br>
+                </div>
+                <div class="column is-one-third-desktop is-half-tablet">
+                    <div class="block has-text-centered">
+
+                        <h5 class="subtitle is-5 is-uppercase">
+                            Yoga
+                        </h5>
+                        <hr>
+                        <div class="content">
+                            Dignissim cras tincidunt lobortis feugiat. Cursus metus aliquam eleifend mi in nulla.
+                            Risus pretium quam vulputate dignissim suspendisse. Sollicitudin ac orci phasellus egestas
+                            tellus rutrum tellus. Et tortor consequat id porta nibh venenatis. Vitae tortor condimentum
+                            lacinia quis vel. A diam maecenas sed enim ut sem viverra aliquet eget. Adipiscing elit ut
+                            aliquam purus sit amet.
+
+                        </div>
+                        <a href="#" class="button is-primary is-outlined is-rounded">List providers</a>
+                    </div>
+                    <br>
+                </div>
+                <div class="column is-one-third-desktop is-half-tablet">
+                    <div class="block has-text-centered">
+
+                        <h5 class="subtitle is-5 is-uppercase">
+                            Massage
+                        </h5>
+                        <hr>
+                        <div class="content">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.
+
+                        </div>
+                        <a href="#" class="button is-primary is-outlined is-rounded">List providers</a>
+                    </div>
+                    <br>
+                </div>
+                <div class="column is-one-third-desktop is-half-tablet">
+                    <div class="block has-text-centered">
+
+                        <h5 class="subtitle is-5 is-uppercase">
+                            Doula
+                        </h5>
+                        <hr>
+                        <div class="content">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.
+
+                        </div>
+                        <a href="#" class="button is-primary is-outlined is-rounded">List providers</a>
+                    </div>
+                    <br>
+                </div>
+                <div class="column is-one-third-desktop is-half-tablet">
+                    <div class="block has-text-centered">
+
+                        <h5 class="subtitle is-5 is-uppercase">
+                            Chiropractic
+                        </h5>
+                        <hr>
+                        <div class="content">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.
+
+                        </div>
+                        <a href="#" class="button is-primary is-outlined is-rounded">List providers</a>
+                    </div>
+                    <br>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+    {% include 'footer.html' %}
+
+</body>
+
+</html>

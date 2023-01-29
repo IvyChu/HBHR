@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
+from flask_mail import Mail
 from flask_migrate import Migrate
 from flask_talisman import Talisman
 from hbhr.config import Config
@@ -28,6 +29,7 @@ bcrypt = Bcrypt()
 login_manager = LoginManager()
 login_manager.login_view = 'users.login'
 login_manager.login_message_category = 'info'
+mail = Mail()
 talisman = Talisman()
 
 csp = {
@@ -86,7 +88,7 @@ def create_app(config_class=Config):
     migrate.init_app(app, db)
             
     bcrypt.init_app(app)
-    #login_manager.init_app(app)
+    login_manager.init_app(app)
     talisman.init_app(app, content_security_policy=csp)
 
     from hbhr.users.routes import users

@@ -1,0 +1,72 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="section">
+    <div class="container">
+        <br><br>
+        <div class="columns">
+            <div class="column is-hidden-touch"></div>
+            <div class="column is-three-fifths-desktop">
+                <div class="box is-fullwidth">
+                    <form method="POST" action="">
+                        {{ form.hidden_tag() }}
+                        <fieldset>
+                            <legend class="is-size-3 mb-3 is-fullwidth">Log in </legend>
+                            <div class="field">
+                                {{ form.email.label(class="label") }}
+                                {% if form.email.errors %}
+                                {{ form.email(class="input is-danger", autocomplete="email username") }}
+                                <p class="help is-danger">
+                                    {% for error in form.email.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </p>
+                                {% else %}
+                                {{ form.email(class="input", autocomplete="email username") }}
+                                {% endif %}
+                            </div>
+                            <div class="field">
+                                {{ form.password.label(class="label") }}
+                                {% if form.password.errors %}
+                                {{ form.password(class="input is-danger", autocomplete="current-password") }}
+                                <div class="help is-danger">
+                                    {% for error in form.password.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ form.password(class="input", autocomplete="current-password") }}
+                                {% endif %}
+                            </div>
+                            <div class="field">
+                                <div class="control">
+                                    <label class="checkbox">
+                                        {{ form.remember(class="form-check-input") }}
+                                        {{ form.remember.label(class="form-check-label") }}
+                                    </label>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <div class="field mt-2">
+                            <div class="control">
+                                {{ form.submit(class="button is-primary") }}
+                            </div>
+
+                            <div class="is-size-6 is-family-secondary has-text-weight-light has-text-right mt-3">
+                                <a href="{{ url_for('users.reset_request') }}">Forgot password?</a>
+                            </div>
+                        </div>
+                    </form>
+                    <hr>
+                    <div class="border-top pt-3">
+                        <small class="has-text-weight-light">
+                            Need an account? <a class="ml-2" href="{{ url_for('users.register') }}">Sign up</a>
+                        </small>
+                    </div>
+                </div>
+
+            </div>
+            <div class="column is-hidden-touch"></div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

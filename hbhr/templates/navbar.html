@@ -1,7 +1,12 @@
 <!-- Navigation bar -->
-<nav class="navbar is-primary is-fixed-top">
+<nav class="main-nav navbar is-primary" role="navigation" aria-label="main navigation">
+  <div class="container">
     <div class="navbar-brand">
-      <div class="navbar-burger burger" _="on click toggle .is-active on me and .navbar-menu">
+      <a class="navbar-item" href="{{ url_for('main.home') }}">
+        <h5 class="is-5 is-uppercase is-family-secondary">HSHR</h5>
+      </a>
+      <div role="button" class="navbar-burger"
+        _="on click toggle .is-active on me then toggle .is-active on .navbar-menu">
         <span></span>
         <span></span>
         <span></span>
@@ -9,6 +14,20 @@
     </div>
 
     <div id="navbar" class="navbar-menu is-light">
+      <div class="navbar-start">
+        <div class="navbar-item">
+          <div class="field has-addons">
+            <div class="control">
+              <input class="input" type="text" placeholder="Midwife">
+            </div>
+            <div class="control">
+              <a class="button is-link">
+                <span class="icon"><i class="fa fa-search"></i></span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="navbar-end">
         <a class="navbar-item" href="#about">
           <span class="icon">
@@ -28,19 +47,45 @@
           </span>
           <span>Birth stories</span>
         </a>
-
         <a class="navbar-item" href="#portfolio">
           <span class="icon">
             <i class="fa fa-envelope"></i>
           </span>
           <span>Contact</span>
         </a>
-        <a class="navbar-item" href="#contact">
-          <span class="icon">
-            <i class="fa fa-user"></i>
-          </span>
-          <span>Log in</span>
-        </a>
+        {% if current_user.is_authenticated %}
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="{{ url_for('users.account') }}">
+              <div class="mx-1 is-hidden-touch">
+                <figure class="image is-32x32 avatar-small">
+                  <img class="is-rounded"
+                    src="{{ url_for('static', filename='profile_pics/' + current_user.image_file) }}">
+                </figure>
+              </div>
+              <span>{{ current_user.display_name }}</span>
+          </a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="{{ url_for('users.account') }}">
+              Account
+            </a>
+            <a class="navbar-item" href="{{ url_for('users.logout') }}">
+              Log out
+            </a>
+          </div>
+        </div>
+
+        {% else %}
+        <div class="buttons">
+          <a class="button is-primary" href="{{ url_for('users.register') }}">
+            <strong>Sign up</strong>
+          </a>
+          <a class="button is-light" href="{{ url_for('users.login') }}">
+            Log in
+          </a>
+        </div>
+
+        {% endif %}
       </div>
     </div>
-  </nav>
+  </div>
+</nav>
