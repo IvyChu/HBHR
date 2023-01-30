@@ -3,14 +3,15 @@
 
 <div class="section">
     <div class="container">
+        <br><br>
         <div class="columns">
-            <div class="column is-two-thirds-desktop is-hidden-tablet-only"></div>
-            <div class="column is-one-third-desktop">
+            <div class="column is-hidden-touch"></div>
+            <div class="column is-three-fifths-desktop">
                 <div class="box">
                     <form method="POST" action="">
                         {{ form.hidden_tag() }}
                         <fieldset>
-                            <legend class="is-size-3 mb-3">Join today</legend>
+                            <legend class="is-size-3 mb-3">Create an account</legend>
                             <div class="field">
                                 {{ form.username.label(class="label") }}
 
@@ -80,8 +81,8 @@
                     </div>
                 </div>
             </div>
+            <div class="column is-hidden-touch"></div>
         </div>
-        <br><br><br><br><br>
     </div>
 </div>
 {% endblock content %}
