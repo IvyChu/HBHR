@@ -10,3 +10,13 @@ main = Blueprint('main', __name__)
 def home():
     log.debug("We've hit home")
     return render_template('index.html', title='Welcome')
+
+
+@main.route("/about")
+def about():
+    return render_template('about.html', title='About')
+
+
+@main.route("/privacy")
+def privacy():
+    return render_template('privacy.html', title='Privacy policy')

@@ -29,13 +29,8 @@
         </div>
       </div>
       <div class="navbar-end">
-        <a class="navbar-item" href="#about">
-          <span class="icon">
-            <i class="fa fa-info"></i>
-          </span>
-          <span>About</span>
-        </a>
-        <a class="navbar-item" href="#about">
+        
+        <!-- <a class="navbar-item" href="#about">
           <span class="icon">
             <i class="fa fa-pencil"></i>
           </span>
@@ -46,13 +41,8 @@
             <i class="fa fa-bars"></i>
           </span>
           <span>Birth stories</span>
-        </a>
-        <a class="navbar-item" href="#portfolio">
-          <span class="icon">
-            <i class="fa fa-envelope"></i>
-          </span>
-          <span>Contact</span>
-        </a>
+        </a> -->
+        
         {% if current_user.is_authenticated %}
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link" href="{{ url_for('users.account') }}">
