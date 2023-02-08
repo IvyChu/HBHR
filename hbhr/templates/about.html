@@ -35,44 +35,53 @@
     <div class="columns">
         <div class="column is-one-quarter-desktop is-hidden-tablet-only"></div>
         <div class="column is-half-desktop">
-            <div class="content">
-                {% include 'messages.html' %}
+
+            {% include 'messages.html' %}
+            <div class="content is-medium">
                 <h2>What is Homebirth Support Hampton Roads?</h2>
                 <p>
-                    Homebirth Support Hampton Roads is a website associated with the Facebook group by the same name.
-                    We're moms and birth workers passionate about supporting families who choose to give birth out of
-                    hospitals.
+                    Homebirth Support Hampton Roads is a group of moms and birth workers passionate about supporting families who choose to give birth out of
+                    hospitals. This website is associated with the <a href="https://www.facebook.com/groups/homebirthHR"  target="_blank">Facebook group</a> by the same name.
                     The primary purpose of this website is to provide a community managed directory of homebirth related
-                    services
-                    available to families in southeastern Virginia.
+                    services available to families in southeastern Virginia.
                 </p>
+            </div>
+
+            <div class="content">
+                <figure class="image">
+                    <img src="{{ url_for('static', filename='img/janko-ferlic-ZNVGL_Pcf74-unsplash.jpg') }}">
+                </figure>
 
                 <h2>For moms:</h2>
 
                 <h3>How do I know which services I need?</h3>
                 <p>
-                    We encourage you to read the service descriptions, do your research online and offline, 
-                    talk to other moms in our group, read some of our recommended books, and come to your own 
-                    decisions on which services will be best for you.
+                    We encourage you to read the service descriptions, do your research online and offline,
+                    talk to other moms in our group, read some of our recommended books and websites, and come to your own
+                    conclusions about which services will be best for you.
                 </p>
 
                 <h3>How do I find avilable providers?</h3>
                 <p>
-                    Look through the directory and click on the service for which you want to find local providers. 
+                    Look through the directory and click on the service for which you want to find local providers.
                     Then go through the list and contact the ones you think and feel could be the best fit for you.
                 </p>
+
+                <figure class="image">
+                    <img src="{{ url_for('static', filename='img/olivia-anne-snyder-o1XLLy7SCCY-unsplash.jpg') }}">
+                </figure>
 
                 <h2>For birth workers:</h2>
 
                 <h3>I own a homebirth related business. How can I get listed in the directory?</h3>
                 <p>
                     To list your business, you will need to do the following steps:
-                    <ol>
-                        <li>Create an account.</li>
-                        <li>Add a business to your account.</li>
-                        <li>Select in which categories you wish your business to be listed.</li>
-                        <li>Publish.</li>
-                    </ol>
+                <ol>
+                    <li>Create an account.</li>
+                    <li>Add a business to your account.</li>
+                    <li>Select in which categories you wish your business to be listed.</li>
+                    <li>Publish.</li>
+                </ol>
                 </p>
 
 

@@ -152,4 +152,39 @@
     </div>
 </section>
 
+<section class="hero is-primary">
+    <div class="hero-body">
+        <div class="container">
+            <div class="columns is-vcentered">
+                <div class="column">
+                    <figure class="image">
+                        <img class="is-rounded" src="{{ url_for('static', filename='img/luma-pimentel-1vnB2l7j3bY-unsplash.jpg') }}">
+                    </figure>
+                </div>
+                <div class="column">
+                    <div class="content mx-5">
+                        {% if current_user.is_authenticated %}
+                        <p class="title">
+                            List your business
+                        </p>
+                        <p class="subtitle">
+                            Create your business page and have it included in our directory.
+                        </p>
+                        <a class="button is-link" href="#">Create your business</a>
+                        {% else %}
+                        <p class="title">
+                            List your business
+                        </p>
+                        <p class="subtitle">
+                            Create an account and get your business included in our directory to help expectant families find your services.
+                        </p>
+                        <a class="button is-link" href="{{ url_for('security.register') }}">Start here</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 {% endblock content %}

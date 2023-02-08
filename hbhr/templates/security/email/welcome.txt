@@ -1,0 +1,16 @@
+{# This template receives the following context:
+  confirmation_link - the link that should be fetched (GET) to confirm
+  confirmation_token - this token is part of confirmation link - but can be used to
+    construct arbitrary URLs for redirecting.
+  user - the entire user model object
+  security - the Flask-Security configuration
+#}
+{{ _fsdomain('Welcome, %(username)s!', username=user.username) }}
+
+Thank you for joining Homebirth Support Hampton Roads community. 
+
+{% if security.confirmable %}
+{{ _fsdomain('You can confirm your email through the link below:') }}
+
+{{ confirmation_link }}
+{% endif %}

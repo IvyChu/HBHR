@@ -1,0 +1,109 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="section">
+    <div class="container">
+        <br><br>
+        <div class="columns">
+            <div class="column is-hidden-touch"></div>
+            <div class="column is-three-fifths-desktop">
+                {% include 'messages.html' %}
+                <div class="box">
+                    <form action="{{ url_for_security('register') }}" method="post" name="register_user_form">
+                        {{ register_user_form.hidden_tag() }}
+                        <fieldset>
+                            <legend class="is-size-3 mb-3">Create an account</legend>
+                            <div class="field">
+                                {{ register_user_form.username.label(class="label") }}
+
+                                {% if register_user_form.username.errors %}
+                                <p class="control has-icons-left">
+                                    {{ register_user_form.username(class="input is-danger", autocomplete="username") }}
+                                    <span class="icon is-small is-left">
+                                        <i class="fa fa-user"></i>
+                                    </span>
+                                </p>
+                                <div class="help is-danger">
+                                    {% for error in register_user_form.username.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                <p class="control has-icons-left">
+                                    {{ register_user_form.username(class="input", autocomplete="username") }}
+                                    <span class="icon is-small is-left">
+                                        <i class="fa fa-user"></i>
+                                    </span>
+                                </p>
+                                {% endif %}
+                            </div>
+                            <div class="field">
+                                {{ register_user_form.email.label(class="label") }}
+                                {% if register_user_form.email.errors %}
+                                <p class="control has-icons-left">
+                                    {{ register_user_form.email(class="input is-danger", autocomplete="email") }}
+                                    <span class="icon is-small is-left">
+                                        <i class="fa fa-envelope"></i>
+                                    </span>
+                                </p>
+                                <div class="help is-danger">
+                                    {% for error in register_user_form.email.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                <p class="control has-icons-left">
+                                    {{ register_user_form.email(class="input", autocomplete="email") }}
+                                    <span class="icon is-small is-left">
+                                        <i class="fa fa-envelope"></i>
+                                    </span>
+                                </p>
+                                {% endif %}
+                            </div>
+                            <div class="field">
+                                {{ register_user_form.password.label(class="label") }}
+                                {% if register_user_form.password.errors %}
+                                <p class="control has-icons-left">
+                                    {{ register_user_form.password(class="input is-danger", autocomplete="new-password")
+                                    }}
+                                    <span class="icon is-small is-left">
+                                        <i class="fa fa-lock"></i>
+                                    </span>
+                                </p>
+
+                                <div class="help is-danger">
+                                    {% for error in register_user_form.password.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                <p class="control has-icons-left">
+                                    {{ register_user_form.password(class="input", autocomplete="new-password") }}
+                                    <span class="icon is-small is-left">
+                                        <i class="fa fa-lock"></i>
+                                    </span>
+                                </p>
+
+                                {% endif %}
+                            </div>
+                        </fieldset>
+                        <div class="field mt-2">
+                            <div class="control">
+                                {{ register_user_form.submit(class="button is-link") }}
+                            </div>
+                        </div>
+
+                    </form>
+                    <hr>
+                    <div class="border-top pt-3">
+                        <small class="has-text-weight-light">
+                            Already have an account? <a class="ml-2" href="{{ url_for('security.login') }}">Log in</a>
+                        </small>
+                    </div>
+                </div>
+            </div>
+            <div class="column is-hidden-touch"></div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

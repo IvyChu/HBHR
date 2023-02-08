@@ -1,5 +1,5 @@
 from flask import render_template, request, Blueprint
-from flask_login import current_user
+from flask_security import current_user
 from hbhr import log
 
 main = Blueprint('main', __name__)

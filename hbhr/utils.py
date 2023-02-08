@@ -1,9 +1,8 @@
 import os
 import secrets
 from PIL import Image
-from flask import url_for, current_app
-from flask_mail import Message
-from hbhr import mail, log
+from flask import current_app
+from hbhr import log
 
 def check_picture_size(picture, width=400, height=400):
     if picture:
@@ -59,6 +58,8 @@ def save_thumbnail(form_picture, width=400, height=400, path_to_pic='static/prof
     im.thumbnail(output_size)
     im.save(picture_path)
 
+    log.debug(f"Saved thumb {picture_path}")
+
     return picture_fn
 
 
@@ -75,22 +76,6 @@ def save_photo(form_picture):
     i = Image.open(form_picture)
     i.save(picture_path)
 
+    log.debug(f"Saved pic {picture_path}")
+
     return (picture_fn, thumbnail_fn)
-
-
-def send_reset_email(user):
-    token = user.get_reset_token()
-    msg = Message('Password Reset Request',
-                  recipients=[user.email])
-    msg.body = f'''To reset your password, visit the following link:
-{url_for('users.reset_token', token=token, _external=True)}
-
-If you did not make this request then simply ignore this email and no changes will be made.
-'''
-    try:
-        mail.send(msg)
-    except:
-        log.exception(f'Failed to send reset email to {user}')
-    else:
-        log.info(f"Reset email sent to {user}")
-

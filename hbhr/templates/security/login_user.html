@@ -1,0 +1,94 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="section">
+    <div class="container">
+        <br><br>
+        <div class="columns">
+            <div class="column is-hidden-touch"></div>
+            <div class="column is-three-fifths-desktop">
+                {% include 'messages.html' %}
+                <div class="box is-fullwidth">
+                    <form action="{{ url_for_security('login') }}" method="post" name="login_user_form">
+                        {{ login_user_form.hidden_tag() }}
+                        <fieldset>
+                            <legend class="is-size-3 mb-3 is-fullwidth">Log in </legend>
+                            <div class="field">
+                                {{ login_user_form.email.label(class="label") }}
+                                {% if login_user_form.email.errors %}
+                                <p class="control has-icons-left">
+                                    {{ login_user_form.email(class="input is-danger", autocomplete="email username") }}
+                                    <span class="icon is-small is-left">
+                                        <i class="fa fa-envelope"></i>
+                                    </span>
+                                </p>
+                                <p class="help is-danger">
+                                    {% for error in login_user_form.email.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </p>
+                                {% else %}
+                                <p class="control has-icons-left">
+                                    {{ login_user_form.email(class="input", autocomplete="email username") }}
+                                    <span class="icon is-small is-left">
+                                        <i class="fa fa-envelope"></i>
+                                    </span>
+                                </p>
+                                {% endif %}
+                            </div>
+                            <div class="field">
+                                {{ login_user_form.password.label(class="label") }}
+                                {% if login_user_form.password.errors %}
+                                <p class="control has-icons-left">
+                                    {{ login_user_form.password(class="input is-danger",
+                                    autocomplete="current-password") }}
+                                    <span class="icon is-small is-left">
+                                        <i class="fa fa-lock"></i>
+                                    </span>
+                                </p>
+                                <div class="help is-danger">
+                                    {% for error in login_user_form.password.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                <p class="control has-icons-left">
+                                    {{ login_user_form.password(class="input", autocomplete="current-password") }}
+                                    <span class="icon is-small is-left">
+                                        <i class="fa fa-lock"></i>
+                                    </span>
+                                </p>
+                                {% endif %}
+                            </div>
+                            <div class="field">
+                                <div class="control">
+                                    <label class="checkbox">
+                                        {{ login_user_form.remember(class="form-check-input") }}
+                                        {{ login_user_form.remember.label(class="form-check-label") }}
+                                    </label>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <div class="field mt-2">
+                            <div class="control">
+                                {{ login_user_form.submit(class="button is-primary") }}
+                            </div>
+
+                            <div class="is-size-6 is-family-secondary has-text-weight-light has-text-right mt-3">
+                                <a href="{{ url_for('security.forgot_password') }}">Forgot password?</a>
+                            </div>
+                        </div>
+                    </form>
+                    <hr>
+                    <div class="border-top pt-3">
+                        <small class="has-text-weight-light">
+                            Need an account? <a class="ml-2" href="{{ url_for('security.register') }}">Sign up</a>
+                        </small>
+                    </div>
+                </div>
+
+            </div>
+            <div class="column is-hidden-touch"></div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

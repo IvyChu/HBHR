@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+{% from "security/_macros.html" import prop_next %}
+
+{% block content %}
+<div class="section">
+    <div class="container">
+        <br><br>
+        <div class="columns">
+            <div class="column is-hidden-touch"></div>
+            <div class="column is-three-fifths-desktop">
+                {% include 'messages.html' %}
+                <div class="box is-fullwidth">
+                    <form action="{{ url_for_security('verify') }}{{ prop_next() }}" method="POST" name="verify_form">
+                        {{ verify_form.hidden_tag() }}
+                        <fieldset>
+                            <legend class="is-size-3 mb-3">Please reauthenticate</legend>
+                            <div class="field">
+                                {{ verify_form.password.label(class="label") }}
+                                {% if verify_form.password.errors %}
+                                <p class="control has-icons-left">
+                                    {{ verify_form.password(class="input is-danger",
+                                    autocomplete="current-password") }}
+                                    <span class="icon is-small is-left">
+                                        <i class="fa fa-lock"></i>
+                                    </span>
+                                </p>
+                                <div class="help is-danger">
+                                    {% for error in verify_form.password.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                <p class="control has-icons-left">
+                                    {{ verify_form.password(class="input", autocomplete="current-password") }}
+                                    <span class="icon is-small is-left">
+                                        <i class="fa fa-lock"></i>
+                                    </span>
+                                </p>
+                                {% endif %}
+                            </div>
+                        </fieldset>
+                        <div class="field mt-4">
+                            <div class="control">
+                                {{ verify_form.submit(class="button is-primary") }}
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="column is-hidden-touch"></div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

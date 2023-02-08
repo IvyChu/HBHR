@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+
+
+{% block content %}
+<div class="section">
+    <div class="container">
+        <br><br>
+        <div class="columns">
+            <div class="column is-hidden-touch"></div>
+            <div class="column is-three-fifths-desktop">
+                {% include 'messages.html' %}
+                <div class="box is-fullwidth">
+                    <form action="{{ url_for_security('send_confirmation') }}" method="POST" name="send_confirmation_form">
+                        {{ send_confirmation_form.hidden_tag() }}
+                        <fieldset>
+                            <legend class="is-size-3 mb-3">Resend confirmation instructions</legend>
+                            <div class="field">
+                                {{ send_confirmation_form.email.label(class="label") }}
+                                {% if send_confirmation_form.email.errors %}
+                                {{ send_confirmation_form.email(class="input is-danger", autocomplete="email") }}
+                                <div class="help is-danger">
+                                    {% for error in send_confirmation_form.email.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                <p class="control has-icons-left">
+                                    {{ send_confirmation_form.email(class="input", autocomplete="email") }}
+                                    <span class="icon is-small is-left">
+                                        <i class="fa fa-envelope"></i>
+                                    </span>
+                                </p>
+                                {% endif %}
+                            </div>
+                        </fieldset>
+                        <div class="field mt-4">
+                            <div class="control">
+                                {{ send_confirmation_form.submit(class="button is-primary") }}
+                            </div>
+                        </div>
+                    </form>
+                    <hr>
+                    <div class="border-top pt-3">
+                        <small class="has-text-weight-light">
+                            Need an account? <a class="ml-2" href="{{ url_for('security.register') }}">Sign up</a>
+                        </small>
+                    </div>
+                </div>
+
+            </div>
+            <div class="column is-hidden-touch"></div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

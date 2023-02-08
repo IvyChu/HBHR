@@ -58,7 +58,7 @@
             <a class="navbar-item" href="{{ url_for('users.account') }}">
               Account
             </a>
-            <a class="navbar-item" href="{{ url_for('users.logout') }}">
+            <a class="navbar-item" href="{{ url_for('security.logout') }}">
               Log out
             </a>
           </div>
@@ -66,10 +66,10 @@
 
         {% else %}
         <div class="buttons">
-          <a class="button is-link" href="{{ url_for('users.register') }}">
+          <a class="button is-link" href="{{ url_for('security.register') }}">
             <strong>Sign up</strong>
           </a>
-          <a class="button is-primary" href="{{ url_for('users.login') }}">
+          <a class="button is-primary" href="{{ url_for('security.login') }}">
             Log in
           </a>
         </div>
