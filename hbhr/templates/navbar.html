@@ -45,7 +45,7 @@
         
         {% if current_user.is_authenticated %}
         <div class="navbar-item has-dropdown is-hoverable">
-          <a class="navbar-link" href="{{ url_for('users.account') }}">
+          <a class="navbar-link">
               <div class="mx-1 is-hidden-touch">
                 <figure class="image is-32x32 avatar-small">
                   <img class="is-rounded"
@@ -55,6 +55,9 @@
               <span>{{ current_user.display_name }}</span>
           </a>
           <div class="navbar-dropdown">
+            <a class="navbar-item" href="{{ url_for('users.dashboard') }}">
+              Dashboard
+            </a>
             <a class="navbar-item" href="{{ url_for('users.account') }}">
               Account
             </a>

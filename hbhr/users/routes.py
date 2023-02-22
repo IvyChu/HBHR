@@ -33,3 +33,8 @@ def account():
                            image_file=image_file, form=form, user=current_user)
 
 
+@users.route("/dashboard", methods=['GET'])
+def dashboard():
+    image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+    return render_template('dashboard.html', title='Account',
+                           image_file=image_file, user=current_user)

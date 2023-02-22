@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="section">
+    <div class="columns">
+        <div class="column is-offset-1-desktop is-one-fifth">
+            {% include 'profile_header.html' %}
+        </div>
+
+        <div class="column is-three-fifths-desktop">
+            <div class="content">
+                {% include 'messages.html' %}
+                <h2>Dashboard</h2>
+                <hr>
+                <h3>Favorites</h3>
+                <p>You have no businesses marked as favorite yet.</p>
+                <h3>Reviews</h3>
+                <p>You haven't written any reviews yet.</p>
+                <h3>Birth stories</h3>
+                <p>You haven't written any birth stories yet.</p>
+                <a class="button is-link is-outlined">Write a birth story</a>
+                <h3>Businesses</h3>
+                <p>You haven't listed any businesses yet.</p>
+                <a class="button is-link is-outlined">List your business</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
