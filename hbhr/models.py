@@ -2,7 +2,7 @@ from datetime import datetime
 from random import randrange
 
 # from flask import current_app
-from hbhr import db, bcrypt
+from hbhr import db
 from flask_security import UserMixin, RoleMixin
 from re import sub
 
@@ -34,13 +34,16 @@ class User(db.Model, UserMixin):
 
     # things specifically belonging to this user:
     # posts = db.relationship('Post', backref='author', lazy=True)
-    # imgs = db.relationship('Picture', backref='author', lazy=True)
+    # images = db.relationship('Image', backref='user', lazy=True)
+    # businesses = db.relationship('Business', back_populates='owner')
 
-    def set_password(self, password):
-        self.password = bcrypt.generate_password_hash(password).decode('utf-8')
 
-    def check_password(self, password):
-        return bcrypt.check_password_hash(self.password, password)
+
+    # def set_password(self, password):
+    #     self.password = bcrypt.generate_password_hash(password).decode('utf-8')
+
+    # def check_password(self, password):
+    #     return bcrypt.check_password_hash(self.password, password)
 
     def set_username(self, username):
         self.username = sub('[^A-Za-z0-9_-]+', '', username)
@@ -60,3 +63,10 @@ class Role(db.Model, RoleMixin):
     name = db.Column(db.String(80), unique=True)
     description = db.Column(db.String(255))
     permissions = db.Column(db.UnicodeText)
+
+class Service(db.Model):
+    __tablename__ = 'service'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), unique=True, nullable=False, index=True)
+    description = db.Column(db.String(255))
+
