@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="section">
+    <div class="columns">
+        <div class="column is-one-fifth-desktop is-hidden-tablet-only"></div>
+        <div class="column is-three-fifths-desktop">
+            <div class="content">
+                {% include 'messages.html' %}
+                <h2>Manage services</h2>
+                <hr>
+                <div id="new-service">
+                    <form hx-post="{{ url_for('admin.add_service') }}" hx-swap="afterbegin settle:1s"
+                        hx-target="#services tbody">
+                        {{ form.hidden_tag() }}
+                        <div class="field">
+                            {{ form.name.label(class="label") }}
+                            {% if form.name.errors %}
+                            {{ form.name(class="input is-danger") }}
+                            <div class="help is-danger">
+                                {% for error in form.name.errors %}
+                                <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            {{ form.name(class="input") }}
+                            {% endif %}
+                        </div>
+                        <div class="field">
+                            {{ form.description.label(class="label") }}
+                            {% if form.description.errors %}
+                            {{ form.description(class="textarea is-danger", rows="4", placeholder="Add a description...") }}
+                            <div class="help is-danger">
+                                {% for error in form.description.errors %}
+                                <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            {{ form.description(class="textarea", rows="4", placeholder="Add a description...") }}
+                            {% endif %}
+                        </div>
+                        <nav class="level is-mobile ">
+                            <div class="level-left"></div>
+                            <div class="level-right">
+                                <div class="level-item">
+                                    {{ form.submit(class="button is-primary") }}
+                                </div>
+                            </div>
+                        </nav>
+                    </form>
+                </div>
+                
+                <table id="services" class="table is-hoverable is-fullwidth">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody hx-target="closest tr" hx-swap="outerHTML">
+                        {% for service in services %}
+                        {% include 'admin/service_row.html' %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+                  
+
+            </div>
+        </div>
+        <div class="column is-one-fifth-desktop is-hidden-tablet-only"></div>
+    </div>
+</div>
+{% endblock content %}

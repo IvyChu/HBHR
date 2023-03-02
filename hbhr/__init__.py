@@ -25,6 +25,11 @@ convention = {
 metadata = MetaData(naming_convention=convention)
 
 db = SQLAlchemy(metadata=metadata)
+
+from hbhr.models import User, Role
+
+user_datastore = SQLAlchemyUserDatastore(db, User, Role)
+
 migrate = Migrate()
 
 bcrypt = Bcrypt()
@@ -96,10 +101,10 @@ def create_app(config_class=Config):
     mail.init_app(app)
     talisman.init_app(app, content_security_policy=csp)
 
-    from hbhr.models import User, Role
+    
 
     # Setup Flask-Security
-    user_datastore = SQLAlchemyUserDatastore(db, User, Role)
+    # user_datastore = SQLAlchemyUserDatastore(db, User, Role)
     app.security = Security(app, user_datastore)
 
     from hbhr.users.routes import users

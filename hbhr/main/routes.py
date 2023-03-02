@@ -1,6 +1,7 @@
 from flask import render_template, request, Blueprint
 from flask_security import current_user
 from hbhr import log
+from hbhr.models import Service
 
 main = Blueprint('main', __name__)
 
@@ -9,7 +10,8 @@ main = Blueprint('main', __name__)
 @main.route("/home")
 def home():
     log.debug("We've hit home")
-    return render_template('index.html', title='Welcome')
+    services = Service.query.all()
+    return render_template('index.html', title='Welcome', services=services)
 
 
 @main.route("/about")

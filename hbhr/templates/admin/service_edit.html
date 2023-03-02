@@ -1,0 +1,49 @@
+<tr hx-trigger='cancel' class='has-background-white-ter'
+  hx-get="{{ url_for('admin.get_service', service_id=service.id) }}">
+  <td colspan="4">
+    <form>
+      {{ form.hidden_tag() }}
+      <div class="field">
+        {{ form.name.label(class="label") }}
+        {% if form.name.errors %}
+        {{ form.name(class="input is-danger") }}
+        <div class="help is-danger">
+          {% for error in form.name.errors %}
+          <span>{{ error }}</span>
+          {% endfor %}
+        </div>
+        {% else %}
+        {{ form.name(class="input") }}
+        {% endif %}
+      </div>
+      <div class="field">
+
+        {{ form.description.label(class="label") }}
+        {% if form.description.errors %}
+        {{ form.description(class="textarea is-danger", rows="6", placeholder="Add a description...") }}
+        <div class="help is-danger">
+          {% for error in form.description.errors %}
+          <span>{{ error }}</span>
+          {% endfor %}
+        </div>
+        {% else %}
+        {{ form.description(class="textarea", rows="6", placeholder="Add a description...") }}
+        {% endif %}
+      </div>
+      <nav class="level is-mobile ">
+        <div class="level-left"></div>
+        <div class="level-right">
+          <div class="level-item">
+            <button class="button is-danger mr-3" hx-get="{{ url_for('admin.get_service', service_id=service.id) }}">
+              Cancel
+            </button>
+            <button class="button is-success" hx-put="{{ url_for('admin.get_service', service_id=service.id) }}"
+              hx-include="closest tr">
+              Save
+            </button>
+          </div>
+        </div>
+      </nav>
+    </form>
+  </td>
+</tr>
