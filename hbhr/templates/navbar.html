@@ -42,6 +42,12 @@
           </span>
           <span>Birth stories</span>
         </a> -->
+
+        {% if current_user.has_role('admin') %}
+        <a class="navbar-item" href="{{ url_for('admin.home') }}">
+            Admin
+        </a>
+        {% endif %}
         
         {% if current_user.is_authenticated %}
         <div class="navbar-item has-dropdown is-hoverable">
