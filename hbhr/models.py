@@ -38,13 +38,6 @@ class User(db.Model, UserMixin):
     # businesses = db.relationship('Business', back_populates='owner')
 
 
-
-    # def set_password(self, password):
-    #     self.password = bcrypt.generate_password_hash(password).decode('utf-8')
-
-    # def check_password(self, password):
-    #     return bcrypt.check_password_hash(self.password, password)
-
     def set_username(self, username):
         self.username = sub('[^A-Za-z0-9_-]+', '', username)
 
@@ -70,3 +63,69 @@ class Service(db.Model):
     name = db.Column(db.String(80), unique=True, nullable=False, index=True)
     description = db.Column(db.String(255))
 
+
+service_business = db.Table('service_business',
+                            db.Column('service_id', db.Integer,
+                                      db.ForeignKey('service.id')),
+                            db.Column('business_id', db.Integer,
+                                      db.ForeignKey('business.id'))
+                            )
+
+business_user = db.Table('business_user',
+                         db.Column('business_id', db.Integer, db.ForeignKey('business.id')),
+                         db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+                         db.Column('role', db.String(50))
+                         )
+
+class Business(db.Model):
+    __tablename__ = 'business'
+    id = db.Column(db.Integer(), primary_key=True)
+
+    # business role constants
+    OWNER = 'owner'
+    EMPLOYEE = 'employee'
+    PARTNER = 'partner'
+
+    name = db.Column(db.String(255))
+    webpage = db.Column(db.String(255))
+    description = db.Column(db.Text)
+    profile_picture = db.Column(db.String(255))
+    verified = db.Column(db.Boolean(), default=False)
+
+    # Users who work for this business (employees, partners, owners)
+    members = db.relationship('User', secondary=business_user, backref=db.backref('businesses', lazy='dynamic'))
+
+    # One business could have multiple addresses or phones, so they go in their own tables
+    addresses = db.relationship('Address', back_populates='business')
+    phones = db.relationship('Phone', back_populates='business')
+
+    # Services provided by this business
+    services = db.relationship('Service', secondary=service_business,
+        backref=db.backref('businesses', lazy='dynamic'))
+
+class Address(db.Model):
+    __tablename__ = 'address'
+    id = db.Column(db.Integer(), primary_key=True)
+
+    # fields for physical address
+    address = db.Column(db.Text)
+    city = db.Column(db.String(100), nullable=False, index=True)
+    state = db.Column(db.String(30), nullable=False, index=True)
+    zip = db.Column(db.String(20), nullable=False, index=True)
+    
+    # business at this address
+    business_id = db.Column(db.Integer(), db.ForeignKey('business.id'))
+    business = db.relationship('Business', back_populates='addresses')
+
+class Phone(db.Model):
+    __tablename__ = 'phone'
+    id = db.Column(db.Integer(), primary_key=True)
+
+    # fields for phone number
+    country_code = db.Column(db.String(4))
+    phone_number = db.Column(db.String(20))
+    extension = db.Column(db.String(20))
+
+    # phones for this business
+    business_id = db.Column(db.Integer(), db.ForeignKey('business.id'))
+    business = db.relationship('Business', back_populates='phones')
