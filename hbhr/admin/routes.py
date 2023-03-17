@@ -43,6 +43,8 @@ def delete_service(service_id):
 @admin.route("/admin/services/<int:service_id>", methods=['GET', 'PUT'])
 @roles_accepted('admin')
 def get_service(service_id):
+    # if PUT - update the service
+    # if GET - update was cancelled, so return what was there before
     service = Service.query.get_or_404(service_id)
     form = ServiceForm()
     if form.validate_on_submit():
