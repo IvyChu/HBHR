@@ -1,0 +1,29 @@
+<div id="address{{ address.id }}" class="content mb-0">
+    
+    <!-- Main container -->
+    <div class="columns is-vcentered">
+        <!-- Left side -->
+        <div class="column">
+            <p class="has-text-left">
+                <span class="icon is-small mr-3">
+                    <i class="fa fa-location-dot"></i>
+                </span> 
+                {{ address.address }} {{ address.city }}, {{ address.state }} {{ address.zip }}
+            </p>
+        </div>
+
+        <!-- Right side -->
+        {% if current_user.is_authenticated and (current_user.is_owner(business.id) or current_user.has_role('admin')) %}
+        <div class="column is-narrow">
+            <button class="button is-small is-rounded" hx-get="{{ url_for('main.edit_address', address_id=address.id) }}"
+                hx-target="#address{{ address.id }}" hx-swap="innerHTML" hx-trigger="click">
+                Edit
+            </button>
+            <button class="button is-small is-danger is-outlined is-rounded" hx-get="{{ url_for('main.del_address', address_id=address.id) }}"
+                hx-target="#address{{ address.id }}" hx-swap="innerHTML" hx-trigger="click">
+                Delete
+            </button>
+        </div>
+        {% endif %}
+    </div>
+</div>

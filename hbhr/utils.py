@@ -1,8 +1,29 @@
 import os
 import secrets
+import re
+import unicodedata
 from PIL import Image
 from flask import current_app
-from hbhr import log
+#from hbhr import log
+
+def slugify(value, allow_unicode=False):
+    """
+    Convert to ASCII if 'allow_unicode' is False. Convert spaces or repeated
+    dashes to single dashes. Remove characters that aren't alphanumerics,
+    underscores, or hyphens. Convert to lowercase. Also strip leading and
+    trailing whitespace, dashes, and underscores.
+    """
+    value = str(value)
+    if allow_unicode:
+        value = unicodedata.normalize("NFKC", value)
+    else:
+        value = (
+            unicodedata.normalize("NFKD", value)
+            .encode("ascii", "ignore")
+            .decode("ascii")
+        )
+    value = re.sub(r"[^\w\s-]", "", value.lower())
+    return re.sub(r"[-\s]+", "-", value).strip("-_")
 
 def check_picture_size(picture, width=400, height=400):
     if picture:
@@ -58,7 +79,7 @@ def save_thumbnail(form_picture, width=400, height=400, path_to_pic='static/prof
     im.thumbnail(output_size)
     im.save(picture_path)
 
-    log.debug(f"Saved thumb {picture_path}")
+    #log.debug(f"Saved thumb {picture_path}")
 
     return picture_fn
 
@@ -76,6 +97,6 @@ def save_photo(form_picture):
     i = Image.open(form_picture)
     i.save(picture_path)
 
-    log.debug(f"Saved pic {picture_path}")
+    #log.debug(f"Saved pic {picture_path}")
 
     return (picture_fn, thumbnail_fn)

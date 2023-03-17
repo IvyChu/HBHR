@@ -1,0 +1,31 @@
+<div class="mt-2">
+<form id="edit-address" hx-put="{{ url_for('main.edit_address', address_id=address.id) }}" hx-swap="innerHTML settle:1s"
+hx-target="#address{{ address.id }}">
+    {{ form.hidden_tag() }}
+    {% if form.errors.items() %}
+    <div class="notification is-danger">
+        There were errors with your input. Please review the form and try again.
+    </div>
+    {% endif %}
+    <div class="field">
+        <p class="control">
+            {{ form.address(class="textarea", rows=2) }}
+        </p>
+    </div>
+    <div class="field has-addons is-rounded">
+        
+        <p class="control">
+            {{ form.city(class="input") }}
+        </p>
+        <p class="control">
+            {{ form.state(class="input") }}
+        </p>
+        <p class="control">
+            {{ form.zip(class="input") }}
+        </p>
+        <p class="control">
+            {{ form.submit(class="button is-primary") }}
+        </p>
+      </div>
+</form>
+</div>

@@ -5,6 +5,7 @@ from random import randrange
 from hbhr import db
 from flask_security import UserMixin, RoleMixin
 from re import sub
+from hbhr.utils import slugify
 
 
 
@@ -41,6 +42,13 @@ class User(db.Model, UserMixin):
     def set_username(self, username):
         self.username = sub('[^A-Za-z0-9_-]+', '', username)
 
+    def is_owner(self, business_id):
+        business_user = BusinessUser.query.filter((BusinessUser.business_id == business_id) & (BusinessUser.user_id == self.id)).first()
+        if business_user and business_user.role == Business.OWNER:
+            return True
+        return False
+
+
     def __repr__(self):
         return f"User('{self.username}', '{self.email}', '{self.display_name}')"
 
@@ -71,11 +79,12 @@ service_business = db.Table('service_business',
                                       db.ForeignKey('business.id'))
                             )
 
-business_user = db.Table('business_user',
-                         db.Column('business_id', db.Integer, db.ForeignKey('business.id')),
-                         db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
-                         db.Column('role', db.String(50))
-                         )
+class BusinessUser(db.Model):
+    __tablename__ = 'business_user'
+    id = db.Column(db.Integer, primary_key=True)
+    business_id = db.Column(db.Integer, db.ForeignKey('business.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    role = db.Column(db.String(50))
 
 class Business(db.Model):
     __tablename__ = 'business'
@@ -87,17 +96,45 @@ class Business(db.Model):
     PARTNER = 'partner'
 
     name = db.Column(db.String(255))
-    webpage = db.Column(db.String(255))
+
     description = db.Column(db.Text)
-    profile_picture = db.Column(db.String(255))
-    verified = db.Column(db.Boolean(), default=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    webpage = db.Column(db.String(255))
+    image_file = db.Column(db.String(60), nullable=False, default=f'default{randrange(10)}.jpg')
+
+    url = db.Column(db.String(60), unique=True, nullable=False)
+
+    # URL needs to be unique, but the user may want to 
+    def set_url(self, value):
+        # make it URL friendly
+        value = slugify(value)
+        url = value[0:60]
+
+        # check if it already exists for another business
+        business = Business.query.filter_by(url=url).first()
+        while business and business.id != self.id:
+            url = value[0:55] + "-" + str(randrange(1000))
+            business = Business.query.filter_by(url=url).first()
+        self.url = url
+
+
+    # To be verified by an admin or mod... Maybe later?
+    # verified = db.Column(db.Boolean(), default=False)
+
+    date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    last_edit = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     # Users who work for this business (employees, partners, owners)
-    members = db.relationship('User', secondary=business_user, backref=db.backref('businesses', lazy='dynamic'))
+    members = db.relationship('User', secondary='business_user', backref='businesses')
+    business_users = db.relationship('BusinessUser', backref='business', overlaps="businesses,members")
+
+    def add_member(self, user, role):
+        business_user = BusinessUser(business_id=self.id, user_id=user.id, role=role)
+        self.business_users.append(business_user)
 
     # One business could have multiple addresses or phones, so they go in their own tables
-    addresses = db.relationship('Address', back_populates='business')
-    phones = db.relationship('Phone', back_populates='business')
+    addresses = db.relationship('Address', backref='business')
+    phones = db.relationship('Phone', backref='business')
 
     # Services provided by this business
     services = db.relationship('Service', secondary=service_business,
@@ -115,7 +152,6 @@ class Address(db.Model):
     
     # business at this address
     business_id = db.Column(db.Integer(), db.ForeignKey('business.id'))
-    business = db.relationship('Business', back_populates='addresses')
 
 class Phone(db.Model):
     __tablename__ = 'phone'
@@ -128,4 +164,3 @@ class Phone(db.Model):
 
     # phones for this business
     business_id = db.Column(db.Integer(), db.ForeignKey('business.id'))
-    business = db.relationship('Business', back_populates='phones')

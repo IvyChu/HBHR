@@ -50,6 +50,26 @@
         {% endif %}
         
         {% if current_user.is_authenticated %}
+          {% if current_user.businesses %}
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link">Businesses</a>
+            <div class="navbar-dropdown">
+              {% for business in current_user.businesses %}
+              <a class="navbar-item" href="{{ url_for('main.business', business_url=business.url) }}">
+                {{ business.name }}
+              </a>
+              {% endfor %}
+              <hr class="navbar-divider">
+              <a class="navbar-item" href="{{ url_for('main.new_business') }}">
+                Add a business
+              </a>
+            </div>
+          </div>
+          {% else %}
+          <a class="navbar-item" href="{{ url_for('main.new_business') }}">
+            Add a business
+          </a>
+          {% endif %}
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link">
               <div class="mx-1 is-hidden-touch">

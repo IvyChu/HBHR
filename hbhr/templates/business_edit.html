@@ -1,0 +1,120 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="section">
+    <div class="columns">
+        <div class="column is-one-fifth-desktop is-hidden-tablet-only"></div>
+        <div class="column is-three-fifths-desktop">
+            <div class="content">
+                {% include 'messages.html' %}
+                <h2>Edit business</h2>
+                <hr>
+
+                <form id="new-business" method="POST" action="" enctype="multipart/form-data">
+                    {{ form.hidden_tag() }}
+                    {% if form.errors.items() %}
+                    <div class="notification is-danger">
+                        There were errors with your input. Please review the form and try again.
+                    </div>
+                    {% endif %}
+                    <div class="field">
+                        <label class="label">{{ form.name.label }} *</label>
+                        {% if form.name.errors %}
+                        {{ form.name(class="input is-danger") }}
+                        <div class="help is-danger">
+                            {% for error in form.name.errors %}
+                            <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        {{ form.name(class="input") }}
+                        {% endif %}
+                    </div>
+                    <div class="field">
+                        <label class="label">{{ form.url.label }} *</label>
+                        {% if form.url.errors %}
+                        {{ form.url(class="input is-danger") }}
+                        <div class="help is-danger">
+                            {% for error in form.url.errors %}
+                            <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        {{ form.url(class="input") }}
+                        {% endif %}
+                    </div>
+                    <div class="field">
+                        <label class="label">{{ form.email.label }} *</label>
+                        {% if form.email.errors %}
+                        {{ form.email(class="input is-danger") }}
+                        <div class="help is-danger">
+                            {% for error in form.email.errors %}
+                            <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        {{ form.email(class="input") }}
+                        {% endif %}
+                    </div>
+                    <div class="field">
+                        <label class="label">{{ form.webpage.label }}</label>
+                        {% if form.webpage.errors %}
+                        {{ form.webpage(class="input is-danger", placeholder="https://") }}
+                        <div class="help is-danger">
+                            {% for error in form.webpage.errors %}
+                            <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        {{ form.webpage(class="input", placeholder="https://") }}
+                        {% endif %}
+                    </div>
+                    <div class="field">
+                        {{ form.description.label(class="label") }}
+                        {% if form.description.errors %}
+                        {{ form.description(class="textarea is-danger", rows="6", placeholder="Describe your business") }}
+                        <div class="help is-danger">
+                            {% for error in form.description.errors %}
+                            <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        {{ form.description(class="textarea", rows="6", placeholder="Describe your business") }}
+                        {% endif %}
+                    </div>
+                    <div class="field">
+                        {{ form.image_file.label(class="label") }}
+                        <div id="file-profile-pic" class="file has-name">
+                            <label class="file-label">
+                                {{ form.image_file(class="file-input") }}
+                                <span class="file-cta">
+                                    <span class="file-icon">
+                                        <i class="fa fa-upload"></i>
+                                    </span>
+                                    <span class="file-label">Choose a file…</span>
+                                </span>
+                                <span class="file-name">No file uploaded</span>
+                            </label>
+                        </div>
+                        {% if form.image_file.errors %}
+                        {% for error in form.image_file.errors %}
+                        <span class="help is-danger">{{ error }}</span></br>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                    <script src="{{ url_for('static', filename='js/file-upload.js') }}"
+                        type="application/javascript"></script>
+                    <nav class="level is-mobile ">
+                        <div class="level-left"></div>
+                        <div class="level-right">
+                            <div class="level-item">
+                                {{ form.submit(label='Save changes',class="button is-primary") }}
+                            </div>
+                        </div>
+                    </nav>
+                </form>
+            </div>
+        </div>
+        <div class="column is-one-fifth-desktop is-hidden-tablet-only"></div>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,81 @@
+<div class="modal-background"></div>
+<div class="modal-content mx-0">
+    <!-- Any other Bulma elements you want -->
+    <div class="modal-card mx-0">
+        <header class="modal-card-head">
+            <p class="modal-card-title">Add address</p>
+            <button class="delete" aria-label="close" _="on click toggle .is-active on #add-edit-info"></button>
+        </header>
+        <section class="modal-card-body">
+            <form id="new-address" hx-post="{{ url_for('main.add_address', business_id=business_id) }}"
+                hx-swap="beforeend settle:1s" hx-target="#addresses">
+                {{ form.hidden_tag() }}
+                {% if form.errors.items() %}
+                <div class="notification is-danger">
+                    There were errors with your input. Please review the form and try again.
+                </div>
+                {% endif %}
+                <div class="field">
+                    <label class="label">{{ form.address.label }} </label>
+                    {% if form.address.errors %}
+                    {{ form.address(class="textarea is-danger", rows=2) }}
+                    <div class="help is-danger">
+                        {% for error in form.address.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    {{ form.address(class="textarea", rows=2) }}
+                    {% endif %}
+                </div>
+                <div class="field">
+                    <label class="label">{{ form.city.label }}</label>
+                    {% if form.city.errors %}
+                    {{ form.city(class="input is-danger") }}
+                    <div class="help is-danger">
+                        {% for error in form.city.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    {{ form.city(class="input") }}
+                    {% endif %}
+                </div>
+                <div class="field">
+                    <label class="label">{{ form.state.label }}</label>
+                    {% if form.state.errors %}
+                    {{ form.state(class="input is-danger") }}
+                    <div class="help is-danger">
+                        {% for error in form.state.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    {{ form.state(class="input") }}
+                    {% endif %}
+                </div>
+                <div class="field">
+                    {{ form.zip.label(class="label") }}
+                    {% if form.zip.errors %}
+                    {{ form.zip(class="input is-danger") }}
+                    <div class="help is-danger">
+                        {% for error in form.zip.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    {{ form.zip(class="input") }}
+                    {% endif %}
+                </div>
+                <nav class="level is-mobile ">
+                    <div class="level-left"></div>
+                    <div class="level-right">
+                        <div class="level-item">
+                            {{ form.submit(class="button is-primary") }}
+                        </div>
+                    </div>
+                </nav>
+            </form>
+        </section>
+    </div>
+</div>
