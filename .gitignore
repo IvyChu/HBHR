@@ -7,3 +7,4 @@ __pycache__/
 logs/
 styles/test.html
 hbhr/static/profile_pics/*.jpg
+hbhr/static/profile_pics/*.png
