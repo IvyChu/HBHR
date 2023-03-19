@@ -19,8 +19,11 @@
                 hx-target="#address{{ address.id }}" hx-swap="innerHTML" hx-trigger="click">
                 Edit
             </button>
-            <button class="button is-small is-danger is-outlined is-rounded" hx-get="{{ url_for('main.del_address', address_id=address.id) }}"
-                hx-target="#address{{ address.id }}" hx-swap="innerHTML" hx-trigger="click">
+            <button class="button is-small is-danger is-outlined is-rounded" 
+                hx-delete="{{ url_for('main.del_address', address_id=address.id) }}" 
+                hx-confirm="Are you sure you wish to delete this address?"
+                hx-target="#address{{ address.id }}"
+                hx-swap="outerHTML swap:1s">
                 Delete
             </button>
         </div>
