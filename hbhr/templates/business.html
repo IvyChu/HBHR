@@ -20,9 +20,13 @@
                     <i class="fa fa-envelope"></i>
                 </span> <a href="mailto:{{ business.email }}">{{ business.email }}</a></p>
 
-                <p><span class="icon is-small mr-3">
-                    <i class="fa fa-phone"></i>
-                </span>757-555-7489</p>
+                <div id="phones">
+                {% if business.phones %}
+                    {% for phone in business.phones %}
+                    {% include 'phone.html' %}
+                    {% endfor %}
+                {% endif %}
+                </div>
 
                 <div id="addresses">
                 {% if business.addresses %}
@@ -54,7 +58,7 @@
                         <a class="button" hx-get="{{ url_for('main.add_phone', business_id=business.id) }}"
                             hx-target="#add-edit-info" 
                             hx-swap="innerHTML"
-                            hx-trigger="click">
+                            hx-trigger="click" _="on click toggle .is-active on #add-edit-info">
                             Add phone number
                         </a>
                     </p>

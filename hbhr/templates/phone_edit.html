@@ -1,0 +1,31 @@
+<div class="mb-2 mt-2">
+    <form id="edit-phone" hx-put="{{ url_for('main.edit_phone', phone_id=phone.id) }}" hx-swap="innerHTML settle:1s"
+        hx-target="#phone{{ phone.id }}">
+        {{ form.hidden_tag() }}
+
+        <div class="columns is-vcentered">
+            <div class="column is-narrow">
+                <span class="icon is-small mr-3">
+                    <i class="fa fa-phone"></i>
+                </span> 
+            </div>
+            <div class="column">
+                <div class="has-text-left">
+                    {% if form.phone_number.errors %}
+                        {{ form.phone_number(class="input is-danger") }}
+                        <div class="help is-danger">
+                            {% for error in form.phone_number.errors %}
+                            <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.phone_number(class="input") }}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="column is-narrow">
+                {{ form.submit(class="button is-primary is-rounded") }}
+            </div>
+        </div>
+    </form>
+</div>

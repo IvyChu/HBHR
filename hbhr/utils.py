@@ -26,6 +26,10 @@ def slugify(value, allow_unicode=False):
     return re.sub(r"[-\s]+", "-", value).strip("-_")
 
 def check_picture_size(picture, width=400, height=400):
+    """
+    Checks if the picture is smaller than the given dimensions. 
+    Returns True if smaller, False otherwise.
+    """
     if picture:
         i = Image.open(picture)
         if (i.size[0] < width) or (i.size[1] < height):

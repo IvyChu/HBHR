@@ -6,6 +6,7 @@ from hbhr import db
 from flask_security import UserMixin, RoleMixin
 from re import sub
 from hbhr.utils import slugify
+import phonenumbers 
 
 
 
@@ -164,3 +165,14 @@ class Phone(db.Model):
 
     # phones for this business
     business_id = db.Column(db.Integer(), db.ForeignKey('business.id'))
+
+    def get_formatted(self):
+        parsed_number = self.get_parsed()
+        return phonenumbers.format_number(parsed_number, phonenumbers.PhoneNumberFormat.NATIONAL)
+    
+    def get_parsed(self):
+        if self.extension:
+            parsed_number = phonenumbers.parse(f"{self.phone_number} #{self.extension}", "US")
+        else:
+            parsed_number = phonenumbers.parse(self.phone_number, "US")
+        return parsed_number

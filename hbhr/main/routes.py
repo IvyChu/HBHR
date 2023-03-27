@@ -4,6 +4,7 @@ from hbhr import log, db
 from hbhr.models import Service, Business, Address, Phone
 from hbhr.main.forms import BusinessForm, AddressForm, PhoneForm
 from hbhr.utils import save_thumbnail
+import phonenumbers 
 
 main = Blueprint('main', __name__)
 
@@ -94,7 +95,7 @@ def business(business_url):
 
     return render_template('business.html', title=business.name, business=business)
 
-
+### ADDRESSES ###
 @main.route("/business/<int:business_id>/address/new", methods=['GET', 'POST'])
 @login_required
 def add_address(business_id):
@@ -158,9 +159,65 @@ def del_address(address_id):
     db.session.commit()
     return ''
 
-@main.route("/business/<int:business_id>/phone/new", methods=['GET'])
+### PHONES ###
+@main.route("/business/<int:business_id>/phone/new", methods=['GET', 'POST'])
 @login_required
 def add_phone(business_id):
-    # return the form for the address input
-    form = AddressForm()
-    return render_template("address_add.html", business_id=business_id, form=form)
+    business = Business.query.get_or_404(business_id)
+    # return the form for the phone input
+    form = PhoneForm()
+    if form.validate_on_submit():
+        phone_number_parsed = phonenumbers.parse(form.phone_number.data, "US")
+        phone = Phone(phone_number=phone_number_parsed.national_number, extension=phone_number_parsed.extension)
+        business.phones.append(phone)
+        db.session.commit()
+        return render_template('phone.html', phone=phone, business=business)
+    
+    return render_template("phone_add.html", business_id=business_id, form=form)
+
+@main.route("/phone/<int:phone_id>/edit", methods=['GET', 'PUT'])
+@login_required
+def edit_phone(phone_id):
+    
+    phone = Phone.query.get_or_404(phone_id)
+    business = Business.query.get_or_404(phone.business_id)
+    form = PhoneForm()
+
+    # PUT - update phone, and return it in text form
+    if form.validate_on_submit():
+        phone_number_parsed = phonenumbers.parse(form.phone_number.data, "US")
+        phone.phone_number = phone_number_parsed.national_number
+        phone.extension = phone_number_parsed.extension
+        db.session.commit()
+        return render_template('phone.html', phone=phone, business=business)
+    
+    # GET the phone edit form
+    parsed_number = phone.get_parsed()
+    form.phone_number.data = phonenumbers.format_number(parsed_number, phonenumbers.PhoneNumberFormat.NATIONAL)
+
+    return render_template("phone_edit.html", phone=phone, form=form)
+
+@main.route("/phone/<int:phone_id>", methods=['GET', 'PUT'])
+def get_phone(phone_id):
+    # if PUT - update the phone
+    # if GET - update was cancelled, so return what was there before
+    phone = Phone.query.get_or_404(phone_id)
+    form = PhoneForm()
+    if form.validate_on_submit():
+        phone_number_parsed = phonenumbers.parse(form.phone_number.data, "US")
+        phone.phone_number = phone_number_parsed.national_number
+        phone.extension = phone_number_parsed.extension
+        db.session.commit()
+        return render_template('phone.html', phone=phone)
+    parsed_number = phone.get_parsed()
+    return render_template('phone.html', phone=phone, phone_formatted=phonenumbers.format_number(parsed_number, phonenumbers.PhoneNumberFormat.NATIONAL))
+
+@main.route("/phone/<int:phone_id>", methods=['DELETE'])
+@login_required
+def del_phone(phone_id):
+    phone = Phone.query.get_or_404(phone_id)
+    if not current_user.is_owner(phone.business_id):
+        abort(403)
+    db.session.delete(phone)
+    db.session.commit()
+    return ''

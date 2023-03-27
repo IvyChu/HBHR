@@ -3,6 +3,7 @@ from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, SubmitField, TextAreaField, ValidationError
 from wtforms.validators import InputRequired, Length, URL, Email, Optional
 from hbhr.utils import check_picture_size
+import phonenumbers 
 
 class BusinessForm(FlaskForm):
     name = StringField('Business name', validators=[InputRequired()])
@@ -29,7 +30,17 @@ class AddressForm(FlaskForm):
     submit = SubmitField('Submit')
 
 class PhoneForm(FlaskForm):
-    country_code = StringField('Country code', validators=[Length(max=4)])
-    phone_number = StringField('Phone number', validators=[InputRequired(), Length(max=20)])
-    extension = StringField('Extension', validators=[InputRequired(), Length(max=20)])
+    phone_number = StringField('Phone number', validators=[InputRequired(), Length(max=40)])
     submit = SubmitField('Submit')
+
+    def validate_phone_number(self, phone_number):
+        try:
+            my_number = phonenumbers.parse(f"{phone_number.data}", "US")
+            check = phonenumbers.is_possible_number(my_number)
+            if not check:
+                raise ValidationError("This is not a phone number.") 
+        except ValidationError as e:
+            raise e
+        except Exception as e:
+            raise ValidationError("Something is wrong with this phone number.")
+
