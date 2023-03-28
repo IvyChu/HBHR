@@ -2,7 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 from flask_bcrypt import Bcrypt
-# from flask_login import LoginManager
+from flaskext.markdown import Markdown
 from flask_mail import Mail
 
 from flask_security import Security, SQLAlchemyUserDatastore
@@ -48,19 +48,22 @@ csp = {
         '*.googleapis.com',
         'https://bulma.io',
         'https://fonts.gstatic.com',
-        'https://unpkg.com'
+        'https://unpkg.com',
+        'https://ka-f.fontawesome.com/'
     ],
     'style-src': ['\'self\'',
         "'unsafe-inline'",
         'sha256-d7rFBVhb3n/Drrf+EpNWYdITkos3kQRFpB0oSOycXg4=',
         'https://bulma.io',
         'https://fonts.googleapis.com',
-        '*.cloudflare.com'
+        '*.cloudflare.com',
+        'https://kit.fontawesome.com'
     ],
     'script-src': ['\'self\'',
         '*.googleapis.com',
         '*.cloudflare.com',
-        'https://unpkg.com'
+        'https://unpkg.com',
+        'https://kit.fontawesome.com'
     ]
 }
 
@@ -101,7 +104,7 @@ def create_app(config_class=Config):
     mail.init_app(app)
     talisman.init_app(app, content_security_policy=csp)
 
-    
+    Markdown(app)
 
     # Setup Flask-Security
     # user_datastore = SQLAlchemyUserDatastore(db, User, Role)

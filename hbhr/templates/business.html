@@ -38,7 +38,7 @@
                 <br><br>
 
                 {% if business.description %}
-                <p>{{ business.description }}</p>
+                <p>{{ business.description|markdown }}</p>
                 {% endif %}
                 
             </div>
