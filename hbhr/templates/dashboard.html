@@ -19,8 +19,16 @@
                 <p>You haven't written any birth stories yet.</p>
                 <a class="button is-link is-outlined">Write a birth story</a>
                 <h3>Businesses</h3>
-                <p>You haven't listed any businesses yet.</p>
-                <a class="button is-link is-outlined">List your business</a>
+                {% if not current_user.businesses %}
+                    <p>You haven't listed any businesses yet.</p>
+                    <a class="button is-link is-outlined">List your business</a>
+                {% else %}
+                    {% for business in current_user.businesses %}
+                    {% include 'business_short.html' %}
+                    {% endfor %}
+                    <br>
+                    <a class="button is-link is-outlined">List another business</a>
+                {% endif %}
             </div>
         </div>
     </div>

@@ -1,0 +1,38 @@
+<article class="media box">
+    <figure class="media-left ml-0 mr-5">
+      <p class="image is-128x128">
+        <img src="{{ url_for('static', filename='profile_pics/' + business.image_file) }}"
+                    alt="{{ business.name }}">
+      </p>
+    </figure>
+    <div class="media-content">
+      <div class="content">
+        <a href="{{ url_for('main.business', business_url=business.url) }}">
+            <h3 class="title is-3">{{ business.name }}</h3>
+        </a>
+        <div class="tags">
+            {% for service in business.services %}
+            <span class="tag">{{ service.name }}</span>
+            {% endfor %}
+        </div>
+        <p>{{ business.description|truncate(100) }}</p>
+      </div>
+      <nav class="level is-mobile">
+        <div class="level-left">
+          <a class="level-item">
+            <p><i class="fa fa-envelope"></i> {{ business.email }}</p>
+          </a>
+          <a class="level-item">
+            {% if business.phones %}
+                <p><i class="fa fa-phone"></i> {{ business.phones[0].get_formatted() }}</p>
+            {% endif %}
+          </a>
+          <a class="level-item">
+            {% if business.website %}
+            <p><i class="fa fa-globe"></i> <a href="{{ business.website }}">{{ business.website }}</a></p>
+            {% endif %}
+          </a>
+        </div>
+      </nav>
+    </div>
+  </article>
