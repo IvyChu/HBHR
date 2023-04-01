@@ -8,7 +8,12 @@
                 {% include 'messages.html' %}
                 <h2>Admin</h2>
                 <hr>
-                <a class="button is-link" href="{{ url_for('admin.services') }}">Edit categories</a>
+                <div class="columns">
+                    <div class="column is-narrow"><a class="button is-link" href="{{ url_for('admin.services') }}">Edit services</a></div>
+                    <div class="column">Manage the services that businesses can offer and will be listed under.</div>
+                </div>
+
+                <p>Let me know if there needs to be more stuff listed here.</p>
             </div>
         </div>
         <div class="column is-one-quarter-desktop is-hidden-tablet-only"></div>
