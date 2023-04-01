@@ -1,0 +1,44 @@
+<div class="modal-background"></div>
+<div class="modal-content mx-0">
+    <!-- Any other Bulma elements you want -->
+    <div class="modal-card mx-0">
+        <header class="modal-card-head">
+            <p class="modal-card-title">Services provided by your business</p>
+            <button class="delete" aria-label="close" _="on click toggle .is-active on #add-edit-info"></button>
+        </header>
+        <section class="modal-card-body">
+            <form id="edit-services" hx-post="{{ url_for('main.edit_services', business_id=business_id) }}"
+                hx-swap="innerHTML settle:1s" hx-target="#services">
+                {{ form.hidden_tag() }}
+                {% if form.errors.items() %}
+                <div class="notification is-danger">
+                    There were errors with your input. Please review the form and try again.
+                </div>
+                {% endif %}
+                <div class="field">
+                    {{ form.services.label(class="label") }}
+                    <div class="menu">
+                        {% if form.services.errors %}
+                        {{ form.services(class="input is-danger") }}
+                        <div class="help is-danger">
+                            {% for error in form.services.errors %}
+                            <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        {{ form.services(type="checkbox", class="menu-list") }}
+                        {% endif %}
+                    </div>
+                </div>
+                <nav class="level is-mobile ">
+                    <div class="level-left"></div>
+                    <div class="level-right">
+                        <div class="level-item" _="on click toggle .is-active on #add-edit-info">
+                            {{ form.submit(class="button is-primary") }}
+                        </div>
+                    </div>
+                </nav>
+            </form>
+        </section>
+    </div>
+</div>

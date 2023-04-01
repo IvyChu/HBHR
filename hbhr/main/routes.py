@@ -2,7 +2,7 @@ from flask import render_template, request, Blueprint, flash, redirect, url_for,
 from flask_security import current_user, login_required
 from hbhr import log, db
 from hbhr.models import Service, Business, Address, Phone
-from hbhr.main.forms import BusinessForm, AddressForm, PhoneForm
+from hbhr.main.forms import BusinessForm, AddressForm, PhoneForm, LinkServicesForm
 from hbhr.utils import save_thumbnail
 import phonenumbers 
 
@@ -95,7 +95,11 @@ def business(business_url):
 
     return render_template('business.html', title=business.name, business=business)
 
+
+#################
 ### ADDRESSES ###
+#################
+
 @main.route("/business/<int:business_id>/address/new", methods=['GET', 'POST'])
 @login_required
 def add_address(business_id):
@@ -159,7 +163,11 @@ def del_address(address_id):
     db.session.commit()
     return ''
 
+
+##############
 ### PHONES ###
+##############
+
 @main.route("/business/<int:business_id>/phone/new", methods=['GET', 'POST'])
 @login_required
 def add_phone(business_id):
@@ -221,3 +229,42 @@ def del_phone(phone_id):
     db.session.delete(phone)
     db.session.commit()
     return ''
+
+
+################
+### SERVICES ###
+################
+
+@main.route("/business/<int:business_id>/services", methods=['GET', 'POST'])
+@login_required
+def edit_services(business_id):
+    if not current_user.is_owner(business_id):
+        abort(403)
+
+    business = Business.query.get_or_404(business_id)
+
+    services = Service.query.all()
+
+    form = LinkServicesForm()
+
+    form.services.choices = [(s.id, f"{s.name}") for s in services ]
+
+    if form.validate_on_submit():
+        business_services = business.services
+
+        # Services tagged
+        form_services = form.services.data
+        for service in services:
+            if service.id in form_services:
+                business.services.append(service)
+                db.session.commit()
+            elif service in business_services:
+                business.services.remove(service)
+                db.session.commit()
+
+        return render_template('services_list.html', business=business)
+
+    elif request.method == 'GET':
+        form.services.data = [(c.id) for c in business.services]
+
+    return render_template("services_edit.html", form=form, business_id=business_id)

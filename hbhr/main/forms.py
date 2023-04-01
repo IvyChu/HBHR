@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, SubmitField, TextAreaField, ValidationError
+from wtforms import StringField, SubmitField, TextAreaField, ValidationError, SelectMultipleField, widgets
 from wtforms.validators import InputRequired, Length, URL, Email, Optional
 from hbhr.utils import check_picture_size
 import phonenumbers 
@@ -44,3 +44,10 @@ class PhoneForm(FlaskForm):
         except Exception as e:
             raise ValidationError("Something is wrong with this phone number.")
 
+class LinkServicesForm(FlaskForm):
+    services = SelectMultipleField('Select services your business provides', 
+        coerce=int,
+        option_widget=widgets.CheckboxInput(), 
+        widget=widgets.ListWidget(prefix_label=False) )
+
+    submit = SubmitField('Submit')

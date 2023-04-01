@@ -11,6 +11,9 @@
                 {% include 'messages.html' %}
                 <h2 class="title is-2">{{ business.name }}</h2>
                 <hr>
+                <div id="services" class="tags">
+                    {% include 'services_list.html' %}
+                </div>
                 {% if business.webpage %}
                 <p><span class="icon is-small mr-3">
                     <i class="fa fa-arrow-up-right-from-square"></i>
@@ -55,7 +58,7 @@
                 <!-- Right side -->
                 <div class="level-right">
                     <p class="level-item">
-                        <a class="button" hx-get="{{ url_for('main.add_phone', business_id=business.id) }}"
+                        <a class="button is-small is-rounded" hx-get="{{ url_for('main.add_phone', business_id=business.id) }}"
                             hx-target="#add-edit-info" 
                             hx-swap="innerHTML"
                             hx-trigger="click" _="on click toggle .is-active on #add-edit-info">
@@ -63,7 +66,7 @@
                         </a>
                     </p>
                     <p class="level-item">
-                        <a class="button" hx-get="{{ url_for('main.add_address', business_id=business.id) }}"
+                        <a class="button is-small is-rounded" hx-get="{{ url_for('main.add_address', business_id=business.id) }}"
                             hx-target="#add-edit-info" 
                             hx-swap="innerHTML"
                             hx-trigger="click" _="on click toggle .is-active on #add-edit-info">
@@ -71,7 +74,15 @@
                         </a>
                     </p>
                     <p class="level-item">
-                        <a class="button" href="{{ url_for('main.edit_business', business_id=business.id) }}">
+                        <a class="button is-small is-rounded" hx-get="{{ url_for('main.edit_services', business_id=business.id) }}"
+                            hx-target="#add-edit-info" 
+                            hx-swap="innerHTML"
+                            hx-trigger="click" _="on click toggle .is-active on #add-edit-info">
+                            List services
+                        </a>
+                    </p>
+                    <p class="level-item">
+                        <a class="button is-small is-rounded" href="{{ url_for('main.edit_business', business_id=business.id) }}">
                             Edit business
                         </a>
                     </p>

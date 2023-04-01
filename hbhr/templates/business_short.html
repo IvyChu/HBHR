@@ -10,7 +10,7 @@
         <a href="{{ url_for('main.business', business_url=business.url) }}">
             <h3 class="title is-3">{{ business.name }}</h3>
         </a>
-        <div class="tags">
+        <div id="services" class="tags">
             {% for service in business.services %}
             <span class="tag">{{ service.name }}</span>
             {% endfor %}
