@@ -16,16 +16,18 @@
     <div id="navbar" class="navbar-menu">
       <div class="navbar-start">
         <div class="navbar-item">
-          <div class="field has-addons">
-            <div class="control">
-              <input class="input" type="text" placeholder="I'm looking for...">
+          <form name="search" method="GET" action="{{ url_for('main.search') }}">
+            <div class="field has-addons">
+              <div class="control">
+                <input class="input" type="search" name="q" placeholder="I'm looking for...">
+              </div>
+              <div class="control">
+                <button class="button is-link" type="submit">
+                  <span class="icon"><i class="fa fa-search"></i></span>
+                </button>
+              </div>
             </div>
-            <div class="control">
-              <a class="button is-link">
-                <span class="icon"><i class="fa fa-search"></i></span>
-              </a>
-            </div>
-          </div>
+          </form>
         </div>
       </div>
       <div class="navbar-end">

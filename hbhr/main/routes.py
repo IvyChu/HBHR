@@ -5,6 +5,7 @@ from hbhr.models import Service, Business, Address, Phone
 from hbhr.main.forms import BusinessForm, AddressForm, PhoneForm, LinkServicesForm
 from hbhr.utils import save_thumbnail
 import phonenumbers 
+from sqlalchemy import or_
 
 main = Blueprint('main', __name__)
 
@@ -25,6 +26,40 @@ def about():
 @main.route("/privacy")
 def privacy():
     return render_template('privacy.html', title='Privacy policy')
+
+
+@main.route('/search')
+def search():
+    search_terms = request.args.get('q').lower()
+
+    # Search the Services table for service names and descriptions
+    services = Service.query.filter(or_(
+        Service.name.ilike(f'%{search_terms}%'),
+        Service.description.ilike(f'%{search_terms}%'))
+    ).all()
+
+    businesses = []
+
+    # Get the businesses that provide the services that match the search terms
+    for service in services:
+        for business in service.businesses:
+            businesses.append(business)
+
+    log.debug(businesses)
+
+    # Search the Business table for business names that match the search terms
+    businesses += Business.query.filter(Business.name.ilike(f'%{search_terms}%')).all()
+
+    # Remove duplicates
+    businesses = list(set(businesses))
+
+    return render_template('search_results.html', businesses=businesses)
+
+
+################
+### BUSINESS ###
+################
+
 
 @main.route("/business/new", methods=['GET', 'POST'])
 @login_required
@@ -49,7 +84,6 @@ def new_business():
 @main.route("/business/<int:business_id>/edit", methods=['GET', 'POST'])
 @login_required
 def edit_business(business_id):
-    log.info(f"{current_user.businesses}")
     business = Business.query.get_or_404(business_id)
     if not (current_user.is_owner(business_id) or current_user.has_role('admin')):
         flash("You don't have the permission to edit this business. Check with the business owner or admin.","warning")

@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<section class="section">
+    <div class="columns">
+        <div class="column is-one-quarter-desktop is-hidden-tablet-only"></div>
+        <div class="column is-half-desktop">
+            <div class="content">
+                {% include 'messages.html' %}
+                <h3 class="title is-3 is-uppercase">Search results</h3>
+                <hr>
+
+                {% for business in businesses %}
+                {% include 'business_short.html' %}
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}
