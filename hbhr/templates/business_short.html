@@ -1,38 +1,67 @@
 <article class="media box">
-    <figure class="media-left ml-0 mr-5">
-      <p class="image is-128x128">
-        <img src="{{ url_for('static', filename='profile_pics/' + business.image_file) }}"
-                    alt="{{ business.name }}">
-      </p>
-    </figure>
-    <div class="media-content">
-      <div class="content">
-        <a href="{{ url_for('main.business', business_url=business.url) }}">
-            <h3 class="title is-3">{{ business.name }}</h3>
-        </a>
-        <div id="services" class="tags">
-            {% for service in business.services %}
-            <span class="tag">{{ service.name }}</span>
-            {% endfor %}
-        </div>
-        <p>{{ business.description|truncate(100) }}</p>
+  <figure class="media-left ml-0 mr-5">
+    <p class="image is-128x128">
+      <img src="{{ url_for('static', filename='profile_pics/' + business.image_file) }}" alt="{{ business.name }}">
+    </p>
+  </figure>
+  <div class="media-content">
+    <div class="content">
+      <a href="{{ url_for('main.business', business_url=business.url) }}">
+        <h3 class="title is-3">{{ business.name }}</h3>
+      </a>
+      <div id="services" class="tags">
+        {% for service in business.services %}
+        <span class="tag">{{ service.name }}</span>
+        {% endfor %}
       </div>
-      <nav class="level is-mobile">
-        <div class="level-left">
-          <a class="level-item">
-            <p><i class="fa fa-envelope"></i> {{ business.email }}</p>
-          </a>
-          <a class="level-item">
-            {% if business.phones %}
-                <p><i class="fa fa-phone"></i> {{ business.phones[0].get_formatted() }}</p>
-            {% endif %}
-          </a>
-          <a class="level-item">
-            {% if business.website %}
-            <p><i class="fa fa-globe"></i> <a href="{{ business.website }}">{{ business.website }}</a></p>
-            {% endif %}
-          </a>
-        </div>
-      </nav>
+      <p>{{ business.description|truncate(100) }}</p>
     </div>
-  </article>
+    <nav class="level is-mobile">
+      <div class="level-left">
+        <a class="level-item">
+          <p><i class="fa fa-envelope" _="on click remove .is-hidden from #email{{business.id}} 
+                                            then add .is-hidden to #web{{business.id}}
+                                            then add .is-hidden to #tel{{business.id}}
+                                        end "></i> </p>
+        </a>
+        {% if business.phones %}
+        <a class="level-item">
+          <p><i class="fa fa-phone" _="on click remove .is-hidden from #tel{{business.id}} 
+                                          then add .is-hidden to #web{{business.id}}
+                                          then add .is-hidden to #email{{business.id}}
+                                      end "></i></p>
+        </a>
+        {% endif %}
+        {% if business.webpage %}
+        <a class="level-item">
+          <p><i class="fa fa-globe" _="on click remove .is-hidden from #web{{business.id}}
+                                          then add .is-hidden to #tel{{business.id}} 
+                                          then add .is-hidden to #email{{business.id}}
+                                      end "></i></p>
+        </a>
+        {% endif %}
+      </div>
+      <div class="level-right">
+        <div id="email{{business.id}}" class="level-item is-hidden">
+          <p><i class="fa fa-envelope mr-2"></i><a href="mailto:{{ business.email }}">
+            {{ business.email }}
+          </a></p>
+        </div>
+        <div id="tel{{business.id}}" class="level-item is-hidden">
+          {% if business.phones %}
+          <p><i class="fa fa-phone mr-2"></i> <a href="tel:{{ business.phones[0].get_formatted() }}">
+            {{ business.phones[0].get_formatted() }}
+          </a></p>
+          {% endif %}
+        </div>
+        <div id="web{{business.id}}" class="level-item is-hidden">
+          {% if business.webpage %}
+          <p><i class="fa fa-globe mr-2"></i> <a href="{{ business.webpage }}">
+             {{ business.webpage }}
+          </a></p>
+          {% endif %}
+        </div>
+      </div>
+    </nav>
+  </div>
+</article>

@@ -53,7 +53,7 @@ def search():
     # Remove duplicates
     businesses = list(set(businesses))
 
-    return render_template('search_results.html', businesses=businesses)
+    return render_template('search_results.html', businesses=businesses, search_terms=search_terms)
 
 
 ################
