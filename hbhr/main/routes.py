@@ -56,6 +56,17 @@ def search():
     return render_template('search_results.html', businesses=businesses, search_terms=search_terms)
 
 
+@main.route('/service/<int:service_id>')
+def service(service_id):
+    service = Service.query.get_or_404(service_id)
+
+    businesses = []
+
+    for business in service.businesses:
+        businesses.append(business)
+
+    return render_template('search_results.html', businesses=businesses, service=service)
+
 ################
 ### BUSINESS ###
 ################

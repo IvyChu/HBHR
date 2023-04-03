@@ -55,7 +55,7 @@
                     <div class="content">
                         {{ service.description }}
                     </div>
-                    <a href="#" class="button is-link is-outlined is-rounded">List providers</a>
+                    <a href="{{ url_for('main.service', service_id=service.id) }}" class="button is-link is-outlined is-rounded">List providers</a>
                 </div>
                 <br>
             </div>

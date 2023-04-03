@@ -7,13 +7,30 @@
         <div class="column is-two-thirds-desktop">
             <div class="content">
                 {% include 'messages.html' %}
+                {% if search_terms %}
                 <h3 class="title is-3 is-uppercase">Search results</h3>
                 <hr>
-                <p>Searching for: {{ search_terms }}</p>
+                <p>Searching for: <b>{{ search_terms }}</b></p>
+                {% endif %}
 
-                {% for business in businesses %}
-                {% include 'business_short.html' %}
-                {% endfor %}
+                {% if service %}
+                <h3 class="title is-3 is-uppercase">{{ service.name }}</h3>
+                <hr>
+                <p>{{ service.description }}</p>
+                <br>
+                <h4 class="title is-4">Listings</h4>
+                <hr>
+                {% endif %}
+                
+
+
+                {% if businesses %}
+                    {% for business in businesses %}
+                    {% include 'business_short.html' %}
+                    {% endfor %}
+                {% else %}
+                <p>Sorry, there are no businesses listed that match your search.</p>
+                {% endif %}
 
             </div>
         </div>
