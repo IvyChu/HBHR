@@ -1,3 +1,6 @@
-{% for service in business.services %}
-    <span class="tag">{{ service.name }}</span>
-{% endfor %}
+<div id="services" class="tags">
+    {% for service in business.services %}
+    <a href="{{ url_for('main.service', service_id=service.id) }}"><span class="tag is-info mx-1"> {{ service.name
+            }} </span></a>
+    {% endfor %}
+</div>

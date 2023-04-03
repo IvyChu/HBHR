@@ -9,11 +9,8 @@
       <a href="{{ url_for('main.business', business_url=business.url) }}">
         <h3 class="title is-3">{{ business.name }}</h3>
       </a>
-      <div id="services" class="tags">
-        {% for service in business.services %}
-        <span class="tag">{{ service.name }}</span>
-        {% endfor %}
-      </div>
+      
+      {% include 'services_list.html' %}
       <p>{{ business.description|truncate(100) }}</p>
     </div>
     <nav class="level is-mobile">

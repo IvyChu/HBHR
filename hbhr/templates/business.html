@@ -11,9 +11,8 @@
                 {% include 'messages.html' %}
                 <h2 class="title is-2">{{ business.name }}</h2>
                 <hr>
-                <div id="services" class="tags">
-                    {% include 'services_list.html' %}
-                </div>
+                {% include 'services_list.html' %}
+                
                 {% if business.webpage %}
                 <p><span class="icon is-small mr-3">
                     <i class="fa fa-arrow-up-right-from-square"></i>
