@@ -16,7 +16,7 @@
                                 {{ login_user_form.email.label(class="label") }}
                                 {% if login_user_form.email.errors %}
                                 <p class="control has-icons-left">
-                                    {{ login_user_form.email(class="input is-danger", autocomplete="email username") }}
+                                    {{ login_user_form.email(class="input is-danger", autocomplete="username") }}
                                     <span class="icon is-small is-left">
                                         <i class="fa fa-envelope"></i>
                                     </span>
@@ -28,7 +28,7 @@
                                 </p>
                                 {% else %}
                                 <p class="control has-icons-left">
-                                    {{ login_user_form.email(class="input", autocomplete="email username") }}
+                                    {{ login_user_form.email(class="input", autocomplete="username") }}
                                     <span class="icon is-small is-left">
                                         <i class="fa fa-envelope"></i>
                                     </span>
@@ -80,8 +80,11 @@
                     </form>
                     <hr>
                     <div class="border-top pt-3">
-                        <small class="has-text-weight-light">
+                        <small class="has-text-weight-light mr-5">
                             Need an account? <a class="ml-2" href="{{ url_for('security.register') }}">Sign up</a>
+                        </small> 
+                        <small class="has-text-weight-light">
+                            Need confirmation? <a class="ml-2" href="{{ url_for('security.send_confirmation') }}">Confirm email</a>
                         </small>
                     </div>
                 </div>
