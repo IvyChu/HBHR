@@ -18,7 +18,7 @@
 
                                 {% if register_user_form.username.errors %}
                                 <p class="control has-icons-left">
-                                    {{ register_user_form.username(class="input is-danger", autocomplete="username") }}
+                                    <input class="input is-danger" id="username" name="username" type="text" value="">
                                     <span class="icon is-small is-left">
                                         <i class="fa fa-user"></i>
                                     </span>
@@ -30,7 +30,7 @@
                                 </div>
                                 {% else %}
                                 <p class="control has-icons-left">
-                                    {{ register_user_form.username(class="input", autocomplete="username") }}
+                                    <input class="input" id="username" name="username" type="text" value="">
                                     <span class="icon is-small is-left">
                                         <i class="fa fa-user"></i>
                                     </span>
@@ -41,7 +41,7 @@
                                 {{ register_user_form.email.label(class="label") }}
                                 {% if register_user_form.email.errors %}
                                 <p class="control has-icons-left">
-                                    {{ register_user_form.email(class="input is-danger", autocomplete="email") }}
+                                    {{ register_user_form.email(class="input is-danger", autocomplete="username") }}
                                     <span class="icon is-small is-left">
                                         <i class="fa fa-envelope"></i>
                                     </span>
@@ -53,7 +53,7 @@
                                 </div>
                                 {% else %}
                                 <p class="control has-icons-left">
-                                    {{ register_user_form.email(class="input", autocomplete="email") }}
+                                    {{ register_user_form.email(class="input", autocomplete="username") }}
                                     <span class="icon is-small is-left">
                                         <i class="fa fa-envelope"></i>
                                     </span>
