@@ -1,0 +1,23 @@
+{% if business.status == business.ACTIVE %}
+{# Deactivate #}
+<p class="level-item" id="status-toggle">
+    <a class="button is-warning is-small is-rounded" 
+        hx-put="{{ url_for('main.toggle_business_status', business_id=business.id) }}" 
+        hx-target="#status-toggle"
+        hx-trigger="click"
+        hx-swap="outerHTML swap:1s">
+        Hide business
+    </a>
+</p>
+{% else %}
+{# Activate #}
+<p class="level-item" id="status-toggle">
+    <a class="button is-success is-small is-rounded" 
+        hx-put="{{ url_for('main.toggle_business_status', business_id=business.id) }}" 
+        hx-target="#status-toggle"
+        hx-trigger="click"
+        hx-swap="outerHTML swap:1s">
+        Publish business
+    </a>
+</p>
+{% endif %}

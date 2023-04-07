@@ -2,8 +2,8 @@
 {% block content %}
 <div class="section">
     <div class="columns">
-        <div class="column is-one-fifth-desktop is-hidden-tablet-only"></div>
-        <div class="column is-three-fifths-desktop">
+        <div class="column is-one-sixth-desktop is-hidden-tablet-only"></div>
+        <div class="column is-two-thirds-desktop">
             <div class="content">
                 {% include 'messages.html' %}
                 <h2>Manage services</h2>
@@ -54,8 +54,9 @@
                         <tr>
                             <th>Name</th>
                             <th>Description</th>
-                            <th></th>
-                            <th></th>
+                            <th>Edit</th>
+                            <th>Activate</th>
+                            <th>Delete</th>
                         </tr>
                     </thead>
                     <tbody hx-target="closest tr" hx-swap="outerHTML">
@@ -68,7 +69,7 @@
 
             </div>
         </div>
-        <div class="column is-one-fifth-desktop is-hidden-tablet-only"></div>
+        <div class="column is-one-sixth-desktop is-hidden-tablet-only"></div>
     </div>
 </div>
 {% endblock content %}

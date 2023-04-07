@@ -14,7 +14,7 @@ main = Blueprint('main', __name__)
 @main.route("/home")
 def home():
     log.debug("We've hit home")
-    services = Service.query.all()
+    services = Service.query.filter_by(status=Service.ACTIVE)
     return render_template('index.html', title='Welcome', services=services)
 
 
@@ -42,8 +42,10 @@ def search():
 
     # Get the businesses that provide the services that match the search terms
     for service in services:
-        for business in service.businesses:
-            businesses.append(business)
+        if service.is_active():
+            for business in service.businesses:
+                if business.is_active():
+                    businesses.append(business)
 
     log.debug(businesses)
 
@@ -58,14 +60,24 @@ def search():
 
 @main.route('/service/<int:service_id>')
 def service(service_id):
+    # Get service with provided ID from the database or return a 404 error if it doesn't exist.
     service = Service.query.get_or_404(service_id)
 
+    # If the service is not active, return a page with no businesses and the service information.
+    if not service.is_active():
+        return render_template('search_results.html', businesses=None, service=service)
+
+    # Create an empty list to hold the businesses associated with the service.
     businesses = []
 
+    # Loop through all the businesses associated with the service and append the active ones to the list.
     for business in service.businesses:
-        businesses.append(business)
+        if business.is_active():
+            businesses.append(business)
 
+    # Return a page displaying the businesses associated with the service and the service information.
     return render_template('search_results.html', businesses=businesses, service=service)
+
 
 ################
 ### BUSINESS ###
@@ -140,6 +152,20 @@ def business(business_url):
 
     return render_template('business.html', title=business.name, business=business)
 
+@main.route("/business/<int:business_id>/status", methods=['PUT'])
+def toggle_business_status(business_id):
+    # Get the business with the given ID or return a 404 error if not found
+    business = Business.query.get_or_404(business_id)
+    
+    # Toggle the status of the service (i.e. change from active to inactive or vice versa)
+    business.toggle_status()
+    
+    # Commit the changes to the database
+    db.session.commit()
+    
+    # Render the template for the updated service row
+    return render_template('business_status_button.html', business=business)
+
 
 #################
 ### ADDRESSES ###
@@ -202,7 +228,7 @@ def get_address(address_id):
 @login_required
 def del_address(address_id):
     address = Address.query.get_or_404(address_id)
-    if not current_user.is_owner(address.business_id):
+    if not (current_user.is_owner(address.business_id) or current_user.has_role('admin')):
         abort(403)
     db.session.delete(address)
     db.session.commit()
@@ -269,7 +295,7 @@ def get_phone(phone_id):
 @login_required
 def del_phone(phone_id):
     phone = Phone.query.get_or_404(phone_id)
-    if not current_user.is_owner(phone.business_id):
+    if not (current_user.is_owner(phone.business_id) or current_user.has_role('admin')):
         abort(403)
     db.session.delete(phone)
     db.session.commit()
@@ -283,29 +309,31 @@ def del_phone(phone_id):
 @main.route("/business/<int:business_id>/services", methods=['GET', 'POST'])
 @login_required
 def edit_services(business_id):
-    if not current_user.is_owner(business_id):
+    if not (current_user.is_owner(business_id) or current_user.has_role('admin')):
         abort(403)
 
     business = Business.query.get_or_404(business_id)
 
-    services = Service.query.all()
+    services = Service.query.filter_by(status=Service.ACTIVE)
 
     form = LinkServicesForm()
 
     form.services.choices = [(s.id, f"{s.name}") for s in services ]
 
     if form.validate_on_submit():
-        business_services = business.services
+        # Remove all previously selected services
+        business.services = []
 
         # Services tagged
         form_services = form.services.data
+
+        # Add the ones that have been selected this time
         for service in services:
             if service.id in form_services:
                 business.services.append(service)
-                db.session.commit()
-            elif service in business_services:
-                business.services.remove(service)
-                db.session.commit()
+
+        # Commit changes to the database        
+        db.session.commit()
 
         return render_template('services_list.html', business=business)
 

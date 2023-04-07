@@ -35,10 +35,33 @@ def add_service():
 @admin.route("/admin/services/<int:service_id>", methods=['DELETE'])
 @roles_accepted('admin')
 def delete_service(service_id):
+    # Get the service with the given ID or return a 404 error if not found
     service = Service.query.get_or_404(service_id)
+
+    # Delete the service 
     db.session.delete(service)
+
+    # Commit the changes to the database
     db.session.commit()
+
     return ''
+
+@admin.route("/admin/services/<int:service_id>/status", methods=['PUT'])
+@roles_accepted('admin')
+def toggle_service_status(service_id):
+    # Get the service with the given ID or return a 404 error if not found
+    service = Service.query.get_or_404(service_id)
+    
+    # Toggle the status of the service (i.e. change from active to inactive or vice versa)
+    service.toggle_status()
+    
+    # Commit the changes to the database
+    db.session.commit()
+    
+    # Render the template for the updated service row
+    return render_template('admin/service_row.html', service=service)
+
+
 
 @admin.route("/admin/services/<int:service_id>", methods=['GET', 'PUT'])
 @roles_accepted('admin')

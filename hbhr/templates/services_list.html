@@ -1,6 +1,8 @@
 <div id="services" class="tags">
     {% for service in business.services %}
-    <a href="{{ url_for('main.service', service_id=service.id) }}"><span class="tag is-info mx-1"> {{ service.name
+    {% if service.is_active() %}
+    <a href="{{ url_for('main.service', service_id=service.id) }}"><span class="tag mx-1"> {{ service.name
             }} </span></a>
+    {% endif %}
     {% endfor %}
 </div>

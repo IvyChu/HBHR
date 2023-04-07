@@ -9,11 +9,33 @@
         </button>
     </td>
     <td>
-        <button class="button is-danger is-small is-rounded" 
-            hx-delete="{{ url_for('admin.delete_service', service_id=service.id) }}" 
-            hx-confirm="Are you sure you wish to delete this service?"
-            hx-swap="outerHTML swap:1s">
-            Delete
-        </button>
+        {% if service.status == service.ACTIVE %}
+            {# Deactivate #}
+            <button class="button is-warning is-small is-rounded" 
+                hx-put="{{ url_for('admin.toggle_service_status', service_id=service.id) }}" 
+                hx-trigger="click">
+                Deactivate
+            </button>
+        {% else %}
+            {# Activate #}
+            <button class="button is-success is-small is-rounded" 
+                hx-put="{{ url_for('admin.toggle_service_status', service_id=service.id) }}" 
+                hx-trigger="click">
+                Activate
+            </button>
+        {% endif %}
+    </td>
+    <td>
+        {% if not service.businesses %}
+            {# Delete #}
+            <button class="button is-danger is-small is-rounded" 
+                hx-delete="{{ url_for('admin.delete_service', service_id=service.id) }}" 
+                hx-confirm="Are you sure you wish to delete this service?"
+                hx-swap="outerHTML swap:1s">
+                Delete
+            </button>
+        {% else %}
+        {{ service.num_of_businesses() }} listed 
+        {% endif %}
     </td>
 </tr>

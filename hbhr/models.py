@@ -66,12 +66,6 @@ class Role(db.Model, RoleMixin):
     description = db.Column(db.String(255))
     permissions = db.Column(db.UnicodeText)
 
-class Service(db.Model):
-    __tablename__ = 'service'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), unique=True, nullable=False, index=True)
-    description = db.Column(db.String(255))
-
 
 service_business = db.Table('service_business',
                             db.Column('service_id', db.Integer,
@@ -79,6 +73,40 @@ service_business = db.Table('service_business',
                             db.Column('business_id', db.Integer,
                                       db.ForeignKey('business.id'))
                             )
+
+
+class Service(db.Model):
+    __tablename__ = 'service'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), unique=True, nullable=False, index=True)
+    description = db.Column(db.String(255))
+
+    # service status constants
+    ACTIVE = 'active'
+    INACTIVE = 'inactive'
+
+    status = db.Column(db.String(50), default=ACTIVE)
+
+    def toggle_status(self):
+        if self.status == self.ACTIVE:
+            self.status = self.INACTIVE
+        else:
+            self.status = self.ACTIVE
+        return self.status
+    
+    def is_active(self):
+        if self.status == self.ACTIVE:
+            return True
+        return False
+
+    businesses = db.relationship('Business', secondary=service_business, back_populates='services')
+
+    def num_of_businesses(self):
+        if self.businesses:
+            return len(self.businesses)
+        else:
+            return 0
+
 
 class BusinessUser(db.Model):
     __tablename__ = 'business_user'
@@ -96,6 +124,10 @@ class Business(db.Model):
     EMPLOYEE = 'employee'
     PARTNER = 'partner'
 
+    # service status constants
+    ACTIVE = 'active'
+    INACTIVE = 'inactive'
+
     name = db.Column(db.String(255))
 
     description = db.Column(db.Text)
@@ -103,15 +135,30 @@ class Business(db.Model):
     webpage = db.Column(db.String(255))
     image_file = db.Column(db.String(60), nullable=False, default=f'default{randrange(10)}.jpg')
 
+    status = db.Column(db.String(50), default=INACTIVE)
+
+    def toggle_status(self):
+        if self.status == self.ACTIVE:
+            self.status = self.INACTIVE
+        else:
+            self.status = self.ACTIVE
+        return self.status
+    
+    def is_active(self):
+        if self.status == self.ACTIVE:
+            return True
+        return False
+
     url = db.Column(db.String(60), unique=True, nullable=False)
 
-    # URL needs to be unique, but the user may want to 
+    # URL needs to be unique, but the user may want to change it
     def set_url(self, value):
         # make it URL friendly
         value = slugify(value)
         url = value[0:60]
 
         # check if it already exists for another business
+        # this could become an infitine loop, but not likely for this application
         business = Business.query.filter_by(url=url).first()
         while business and business.id != self.id:
             url = value[0:55] + "-" + str(randrange(1000))
@@ -126,7 +173,7 @@ class Business(db.Model):
     last_edit = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     # Users who work for this business (employees, partners, owners)
-    members = db.relationship('User', secondary='business_user', backref='businesses')
+    members = db.relationship('User', secondary='business_user', backref='businesses', viewonly=True)
     business_users = db.relationship('BusinessUser', backref='business', overlaps="businesses,members")
 
     def add_member(self, user, role):
@@ -138,8 +185,7 @@ class Business(db.Model):
     phones = db.relationship('Phone', backref='business')
 
     # Services provided by this business
-    services = db.relationship('Service', secondary=service_business,
-        backref=db.backref('businesses', lazy='dynamic'))
+    services = db.relationship('Service', secondary=service_business, back_populates='businesses')
 
 class Address(db.Model):
     __tablename__ = 'address'

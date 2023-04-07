@@ -14,12 +14,23 @@
                 {% endif %}
 
                 {% if service %}
-                <h3 class="title is-3 is-uppercase">{{ service.name }}</h3>
-                <hr>
-                <p>{{ service.description }}</p>
-                <br>
-                <h4 class="title is-4">Listings</h4>
-                <hr>
+
+                    {% if service.is_active() %}
+                    <h3 class="title is-3 is-uppercase">{{ service.name }}</h3>
+                    <hr>
+                    <p>{{ service.description }}</p>
+                    <br>
+                    <h4 class="title is-4">Listings</h4>
+                    <hr>
+                    {% else %}
+                    <h3 class="title is-3 is-uppercase">Deactivated service</h3>
+                    <hr>
+                    <p>Sorry, it seems like the service you were looking for is currently unavailable. 
+                        The link you clicked on may have been updated or the service may have been temporarily 
+                        deactivated. Please try searching again or feel free to browse our website for other 
+                        available services.</p>
+                    {% endif %}
+
                 {% endif %}
                 
 
