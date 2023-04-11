@@ -87,12 +87,17 @@
                                 {% endif %}
                             </div>
                         </fieldset>
+                        <br>
+                        <div class="box is-shadowless">
+                            <small class="mb-4">By creating an account, you acknowledge that you have read and agree with our 
+                                <a href="{{ url_for('main.tos') }}" target="_blank">Terms of Service</a> and 
+                                <a href="{{ url_for('main.privacy') }}" target="_blank">Privacy Policy</a>.</small>
+                        </div>
                         <div class="field mt-2">
                             <div class="control">
                                 {{ register_user_form.submit(class="button is-link") }}
                             </div>
                         </div>
-
                     </form>
                     <hr>
                     <div class="border-top pt-3">
