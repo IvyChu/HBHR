@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+{% block content %}
+<section>
+    <div class="hero is-primary is-small is-hidden-mobile">
+        <div class="hero-body">
+            <br>
+            <div class="container has-text-centered">
+                <h1 class="title is-1 is-family-secondary pb-3">
+                    HSHR Terms of Service
+                </h1>
+                <h2 class="subtitle is-5 is-uppercase ">
+                    Please be kind so we can get along
+                </h2>
+            </div>
+            <br><br>
+        </div>
+    </div>
+    <!-- Header for phone screen-->
+    <div class="hero is-primary is-small is-hidden-tablet">
+        <br>
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                <h1 class="title is-3 is-family-secondary pb-3">
+                    HSHR Terms of Service
+                </h1>
+                <h2 class="subtitle is-6 is-uppercase">
+                    Please be kind so we can get along
+                </h2>
+            </div>
+            <br>
+        </div>
+    </div>
+</section>
+<section class="section">
+    <div class="columns">
+        <div class="column is-one-quarter-desktop is-hidden-tablet-only"></div>
+        <div class="column is-half-desktop">
+            <div class="content">
+                {% include 'messages.html' %}
+                <p>Welcome to Homebirth Support Hampton Roads, a website dedicated to helping families find the best resources for their homebirth. We want to foster a supportive and honest community, where users can share their businesses and find the services they need.</p>
+
+                <p>To ensure a safe and friendly environment, we ask that all users be kind and respectful towards each other. Any content that is illegal, explicit, inaccurate, or doesn't fit with our community guidelines may be removed at our discretion.</p>
+
+                <p>Users retain their intellectual property rights, but by posting content on our site, they give us permission to display it.</p>
+
+                <p>Please note that users access and use our site at their own risk. We cannot guarantee the accuracy or reliability of any content posted by other users, and we are not responsible for any loss of data or damage that may result from the use of our site.</p>
+
+                <p>If you have any concerns or disputes, please reach out to us via email <a href="mailto:support@homebirthhamptonroads.org" target="_blank">support@homebirthhamptonroads.org</a> or through our <a href="https://www.facebook.com/groups/homebirthHR"  target="_blank">Facebook group</a>. Similarly, we reserve the right to terminate any user account at any time for any reason.</p>
+
+                <p>Thank you for being a part of our community!</p>
+            
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% endblock content %}

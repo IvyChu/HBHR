@@ -27,6 +27,10 @@ def about():
 def privacy():
     return render_template('privacy.html', title='Privacy policy')
 
+@main.route("/tos")
+def tos():
+    return render_template('TOS.html', title='Terms of service')
+
 
 @main.route('/search')
 def search():
