@@ -12,7 +12,7 @@
         </div>
         <div class="content pt-3">
             <p class="title is-4">{{ user.display_name }}</p>
-            <p class="subtitle is-6"><a href="#">@{{ user.username }}</a></p>
+            <p class="subtitle is-6"><a href="{{ url_for('users.profile', username=user.username ) }}">@{{ user.username }}</a></p>
             {% if user.notes %}
             <p class="is-5">{{ user.notes }}</p>
             {% endif %}

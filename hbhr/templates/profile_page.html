@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="section">
+    <div class="columns">
+        <div class="column is-offset-1-desktop is-one-fifth">
+            {% include 'profile_header.html' %}
+        </div>
+
+        <div class="column is-three-fifths-desktop">
+            <div class="content">
+                {% include 'messages.html' %}
+                <h2>{{ user.display_name }}</h2>
+                <hr>
+                <h3>Businesses</h3>
+                {% if not user.businesses %}
+                    <p>No business here yet.</p>
+                    
+                {% else %}
+                    {% for business in user.businesses %}
+                    {% include 'business_short.html' %}
+                    {% endfor %}
+                    <br>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

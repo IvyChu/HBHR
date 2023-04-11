@@ -101,7 +101,7 @@
                 <ul class="menu-list">
                     {% for member in business.members %}
                     <li>
-                        <a>
+                        <a href="{{ url_for('users.profile', username=member.username ) }}">
                         <div class="columns is-vcentered">
                             <div class="column is-narrow is-hidden-mobile">
                                 <figure class="image is-32x32">

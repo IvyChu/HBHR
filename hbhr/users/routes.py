@@ -1,13 +1,15 @@
 from hbhr import db
 from hbhr.users.forms import UpdateAccountForm
 from flask import Blueprint, flash, redirect, render_template, request, url_for
-from flask_security import current_user, login_required
+from flask_security import current_user, login_required, AnonymousUser
 from hbhr.utils import save_thumbnail
+from hbhr.models import User
 
 users = Blueprint('users', __name__)
 
-@login_required
+
 @users.route("/account", methods=['GET', 'POST'])
+@login_required
 def account():
     form = UpdateAccountForm()
     if form.validate_on_submit():
@@ -28,13 +30,21 @@ def account():
         form.display_name.data = current_user.display_name
         form.notes.data = current_user.notes
         form.location.data = current_user.location
-    image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
     return render_template('account.html', title='Account',
-                           image_file=image_file, form=form, user=current_user)
+                           form=form, user=current_user)
 
 
 @users.route("/dashboard", methods=['GET'])
+@login_required
 def dashboard():
-    image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
     return render_template('dashboard.html', title='Account',
-                           image_file=image_file, user=current_user)
+                           user=current_user)
+
+
+@users.route("/user/<string:username>", methods=['GET'])
+def profile(username):
+    user = User.query.filter_by(username=username).first()
+    if not user:
+        return render_template('errors/404.html')
+
+    return render_template('profile_page.html', user=user)
