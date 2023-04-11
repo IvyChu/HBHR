@@ -1,5 +1,5 @@
 from flask import render_template, request, Blueprint, flash, redirect, url_for, abort
-from flask_security import current_user, login_required
+from flask_security import current_user, login_required, AnonymousUser
 from hbhr import log, db
 from hbhr.models import Service, Business, Address, Phone
 from hbhr.main.forms import BusinessForm, AddressForm, PhoneForm, LinkServicesForm
@@ -148,7 +148,9 @@ def business(business_url):
     if not business:
         return render_template('errors/404.html')
     
-    log.info(business.members)
+    if business.status == business.INACTIVE:
+        if isinstance(current_user, AnonymousUser) or not (current_user.is_owner(business.id) or current_user.has_role('admin')):
+            return render_template('errors/404.html')
 
     return render_template('business.html', title=business.name, business=business)
 
