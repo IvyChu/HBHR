@@ -92,7 +92,7 @@ def create_app(config_class=Config):
 
     log.info('Logging set up!')
 
-    log.debug(f"{app.config['SQLALCHEMY_DATABASE_URI']}")
+    #log.debug(f"SQLALCHEMY_DATABASE_URI = {app.config['SQLALCHEMY_DATABASE_URI']}")
 
 
     db.init_app(app)
