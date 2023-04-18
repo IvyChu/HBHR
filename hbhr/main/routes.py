@@ -14,7 +14,7 @@ main = Blueprint('main', __name__)
 @main.route("/home")
 def home():
     log.debug("We've hit home")
-    services = Service.query.filter_by(status=Service.ACTIVE)
+    services = Service.query.filter_by(status=Service.ACTIVE).order_by(Service.id.asc())
     return render_template('index.html', title='Welcome', services=services)
 
 
@@ -58,6 +58,11 @@ def search():
 
     # Remove duplicates
     businesses = list(set(businesses))
+
+    # Remove inactive
+    for business in businesses:
+        if not business.is_active():
+            businesses.remove(business)
 
     return render_template('search_results.html', businesses=businesses, search_terms=search_terms)
 
