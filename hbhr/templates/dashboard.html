@@ -11,6 +11,13 @@
                 {% include 'messages.html' %}
                 <h2>Dashboard</h2>
                 <hr>
+                <h3>Account info</h3>
+                <p>
+                    By following this link, you can personalize your profile by choosing a display name, editing your bio,
+                    changing your avatar, and managing your account settings. You can access these settings
+                    from the top menu dropdown under Account label.
+                </p>
+                <a class="button is-link is-outlined" href="{{ url_for('users.account') }}">Edit your account</a>
                 <h3>Favorites</h3>
                 <p>This feature is not yet implemented.</p>
                 <h3>Reviews</h3>
@@ -21,13 +28,13 @@
                 <h3>Businesses</h3>
                 {% if not current_user.businesses %}
                     <p>You haven't listed any businesses yet.</p>
-                    <a class="button is-link is-outlined">List your business</a>
+                    <a class="button is-link is-outlined" href="{{ url_for('main.new_business') }}">List your business</a>
                 {% else %}
                     {% for business in current_user.businesses %}
                     {% include 'business_short.html' %}
                     {% endfor %}
                     <br>
-                    <a class="button is-link is-outlined">List another business</a>
+                    <a class="button is-link is-outlined" href="{{ url_for('main.new_business') }}">List another business</a>
                 {% endif %}
             </div>
         </div>
