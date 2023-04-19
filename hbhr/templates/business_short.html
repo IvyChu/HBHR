@@ -1,4 +1,4 @@
-<article class="media box">
+<article class="media box is-hidden-mobile">
   <figure class="media-left ml-0 mr-5">
     <p class="image is-128x128">
       <img src="{{ url_for('static', filename='profile_pics/' + business.image_file) }}" alt="{{ business.name }}">
@@ -62,3 +62,70 @@
     </nav>
   </div>
 </article>
+
+<div class="card is-hidden-tablet">
+  <div class="card-content">
+    <div class="is-profile mb-3">
+      <figure class="image is-avatar">
+        <img src="{{ url_for('static', filename='profile_pics/' + business.image_file) }}" alt="{{ business.name }}">
+      </figure>
+    </div>
+
+    <div class="content">
+      <a href="{{ url_for('main.business', business_url=business.url) }}">
+        <h5 class="title is-5">{{ business.name }}</h5>
+      </a>
+      
+      {% include 'services_list.html' %}
+      <p>{{ business.description|truncate(60) }}</p>
+    </div>
+    <nav class="level is-mobile">
+      <div class="level-left">
+        <a class="level-item">
+          <p><i class="fa fa-envelope" _="on click remove .is-hidden from #email{{business.id}}-m 
+                                            then add .is-hidden to #web{{business.id}}-m
+                                            then add .is-hidden to #tel{{business.id}}-m
+                                        end "></i> </p>
+        </a>
+        {% if business.phones %}
+        <a class="level-item">
+          <p><i class="fa fa-phone" _="on click remove .is-hidden from #tel{{business.id}}-m 
+                                          then add .is-hidden to #web{{business.id}}-m
+                                          then add .is-hidden to #email{{business.id}}-m
+                                      end "></i></p>
+        </a>
+        {% endif %}
+        {% if business.webpage %}
+        <a class="level-item">
+          <p><i class="fa fa-globe" _="on click remove .is-hidden from #web{{business.id}}-m
+                                          then add .is-hidden to #tel{{business.id}}-m 
+                                          then add .is-hidden to #email{{business.id}}-m
+                                      end "></i></p>
+        </a>
+        {% endif %}
+      </div>
+      <div class="level-right is-clipped">
+        <div id="email{{business.id}}-m" class="level-item is-hidden">
+          <p><i class="fa fa-envelope mr-2"></i><a href="mailto:{{ business.email }}">
+            {{ business.email }}
+          </a></p>
+        </div>
+        <div id="tel{{business.id}}-m" class="level-item is-hidden">
+          {% if business.phones %}
+          <p><i class="fa fa-phone mr-2"></i> <a href="tel:{{ business.phones[0].get_formatted() }}">
+            {{ business.phones[0].get_formatted() }}
+          </a></p>
+          {% endif %}
+        </div>
+        <div id="web{{business.id}}-m" class="level-item is-hidden">
+          {% if business.webpage %}
+          <p><i class="fa fa-globe mr-2"></i> <a href="{{ business.webpage }}" target="_blank">
+             {{ business.webpage }}
+          </a></p>
+          {% endif %}
+        </div>
+      </div>
+    </nav>
+  </div>
+</div>
+<br>
