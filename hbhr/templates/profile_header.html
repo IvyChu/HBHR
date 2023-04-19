@@ -1,17 +1,18 @@
-<div class="block mb-0">
-    <figure class="image is-square is-hidden-mobile">
-        <img class="is-rounded avatar" src="{{ url_for('static', filename='profile_pics/' + user.image_file) }}">
+<div class="block mb-0 is-hidden-mobile">
+    <figure class="image is-square">
+        <img class="is-rounded" src="{{ url_for('static', filename='profile_pics/' + user.image_file) }}">
+    </figure>
+</div>
+<div class="is-profile is-hidden-tablet">
+    <figure class="image is-avatar">
+        <img class="is-rounded" src="{{ url_for('static', filename='profile_pics/' + user.image_file) }}">
     </figure>
 </div>
 <div class="card is-shadowless has-text-right has-text-left-mobile">
     <div class="card-content">
-        <div class="block mb-0">
-            <figure class="image is-128x128 is-hidden-tablet is-pulled-right">
-                <img class="is-rounded" src="{{ url_for('static', filename='profile_pics/' + user.image_file) }}">
-            </figure>
-        </div>
+        
         <div class="content pt-3">
-            <p class="title is-4">{{ user.display_name }}</p>
+            <p class="title is-5">{{ user.display_name }}</p>
             <p class="subtitle is-6"><a href="{{ url_for('users.profile', username=user.username ) }}">@{{ user.username }}</a></p>
             {% if user.notes %}
             <p class="is-5">{{ user.notes }}</p>

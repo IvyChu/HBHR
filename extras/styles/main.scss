@@ -3,3 +3,15 @@
 @import "./bulma/bulma";
 @import "overrides";
 
+.is-profile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%; /* set the width to full width */
+    max-height: 400px; /* set the height as needed */
+  }
+  
+  .image.is-avatar {
+    max-width: 400px;
+    max-height: 400px;
+  }

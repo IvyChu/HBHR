@@ -12968,4 +12968,25 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
   background-color: #fafafa;
   padding: 3rem 1.5rem 6rem;
 }
+
+.is-profile {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 100%;
+  /* set the width to full width */
+  max-height: 400px;
+  /* set the height as needed */
+}
+
+.image.is-avatar {
+  max-width: 400px;
+  max-height: 400px;
+}
 /*# sourceMappingURL=main.css.map */
