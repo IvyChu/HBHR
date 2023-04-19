@@ -1,4 +1,4 @@
-from flask import render_template, request, Blueprint, flash, redirect, url_for, abort
+from flask import render_template, request, Blueprint, flash, redirect, url_for, abort, current_app
 from flask_security import current_user, login_required, AnonymousUser
 from hbhr import log, db
 from hbhr.models import Service, Business, Address, Phone
@@ -13,9 +13,12 @@ main = Blueprint('main', __name__)
 @main.route("/")
 @main.route("/home")
 def home():
-    log.debug("We've hit home")
-    services = Service.query.filter_by(status=Service.ACTIVE).order_by(Service.id.asc())
-    return render_template('index.html', title='Welcome', services=services)
+    log.debug("home")
+    services = Service.query.filter_by(status=Service.ACTIVE).order_by(Service.id.asc()).all()
+    top_services = []
+    for n in range(0,current_app.config['TOP_SERVICES']):
+        top_services.append(services.pop(0))
+    return render_template('index.html', title='Welcome', top_services=top_services, services=services)
 
 
 @main.route("/about")
