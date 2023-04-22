@@ -32,8 +32,17 @@
                     {% endif %}
 
                 {% endif %}
-                
 
+                {% if others %}
+                <h3 class="title is-3 is-uppercase">Uncategorized businesses</h3>
+                <hr>
+                <p>Some business may not quite fit into any category we have defined on our website. If there are any 
+                    such businesses, you can find them here. 
+                </p>
+                <br>
+                <h4 class="title is-4">Listings</h4>
+                <hr>
+                {% endif %}
 
                 {% if businesses %}
                     {% for business in businesses %}

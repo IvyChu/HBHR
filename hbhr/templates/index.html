@@ -47,10 +47,11 @@
                     <h5 class="subtitle is-5 is-uppercase" _="on click toggle .is-hidden-mobile on next .content">
                         {{ service.name }}
                     </h5>
-                    <div class="content is-hidden-mobile" >
+                    <div class="content is-hidden-mobile">
                         <hr>
                         <p>{{ service.description }}</p>
-                        <a href="{{ url_for('main.service', service_id=service.id) }}" class="button is-link is-outlined is-rounded">List providers</a>
+                        <a href="{{ url_for('main.service', service_id=service.id) }}"
+                            class="button is-link is-outlined is-rounded">List providers</a>
                     </div>
                     <br>
                 </div>
@@ -66,7 +67,8 @@
             <div class="columns is-vcentered">
                 <div class="column">
                     <figure class="image">
-                        <img class="is-rounded" src="{{ url_for('static', filename='img/luma-pimentel-1vnB2l7j3bY-unsplash.jpg') }}">
+                        <img class="is-rounded"
+                            src="{{ url_for('static', filename='img/luma-pimentel-1vnB2l7j3bY-unsplash.jpg') }}">
                     </figure>
                 </div>
                 <div class="column">
@@ -84,7 +86,8 @@
                             List your business
                         </p>
                         <p class="subtitle">
-                            Create an account and get your business included in our directory to help expectant families find your services.
+                            Create an account and get your business included in our directory to help expectant families
+                            find your services.
                         </p>
                         <a class="button is-link" href="{{ url_for('security.register') }}">Start here</a>
                         {% endif %}
@@ -112,6 +115,15 @@
                 </div>
             </div>
             {% endfor %}
+            <div class="column is-one-quarter-desktop is-one-third-tablet">
+                <div class="block has-text-centered">
+                    <a href="{{ url_for('main.others') }}">
+                        <h6 class="subtitle is-6 is-uppercase">
+                            Uncategorized Businesses
+                        </h6>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 </section>

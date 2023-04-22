@@ -67,7 +67,7 @@ def search():
         if not business.is_active():
             businesses.remove(business)
 
-    return render_template('search_results.html', businesses=businesses, search_terms=search_terms)
+    return render_template('search_results.html', businesses=businesses, search_terms=search_terms, title='Search results')
 
 
 @main.route('/service/<int:service_id>')
@@ -88,8 +88,20 @@ def service(service_id):
             businesses.append(business)
 
     # Return a page displaying the businesses associated with the service and the service information.
-    return render_template('search_results.html', businesses=businesses, service=service)
+    return render_template('search_results.html', businesses=businesses, service=service, title=service.name)
 
+
+@main.route('/others')
+def others():
+    all_bus = Business.query.all()
+
+    businesses = []
+
+    for business in all_bus:
+        if business.is_active() and not business.services:
+           businesses.append(business)
+    
+    return render_template('search_results.html', businesses=businesses, others=True, title='Uncategorized businesses')
 
 ################
 ### BUSINESS ###
