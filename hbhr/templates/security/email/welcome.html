@@ -1,0 +1,37 @@
+{# This template receives the following context:
+    confirmation_link - the link that should be fetched (GET) to confirm
+    confirmation_token - this token is part of confirmation link - but can be used to
+      construct arbitrary URLs for redirecting.
+    user - the entire user model object
+    security - the Flask-Security configuration
+#}
+<p>Hello and welcome to HSHR!</p>
+
+<p>We're thrilled to have you join our community. With your new account, 
+you can easily list your homebirth related businesses and make it easier for families to find you.</p>
+
+{% if security.confirmable %}
+<p>Before you get started, please confirm your email address by clicking on the link below. 
+This will ensure that you receive important updates and notifications.</p>
+
+<p><a href="{{ confirmation_link }}">Confirm my email address</a></p>
+{% endif %}
+
+<p>Once you're logged in, you can customize your personal account using 
+the "Account" option located in the top right menu.</p>
+
+<p>To add your business listing, simply click on "Businesses" in the top menu 
+and then select "Add a business." Alternatively, you can find the "Add a business" 
+link on your personal dashboard.</p>
+
+<p>After creating your business listing, you can add contact information 
+such as phone numbers and addresses. To make sure your business appears 
+in the right category, click on "List services" and check all the services 
+you provide. Once you're happy with your listing, click on "Publish business" 
+to share it with the world.</p>
+
+<p>We hope you find our site useful and we're excited to see your business 
+grow with us. If you have any questions, please don't hesitate to contact us.</p>
+
+<p>Best regards,<br>
+The HSHR Team</p>
