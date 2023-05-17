@@ -6,6 +6,17 @@
 
     <link rel="icon" href="{{ url_for('static', filename='img/favicon.ico') }}" type="image/icon type">
 
+    {% if canonical %}
+    <link rel="canonical" href="{{ canonical }}">
+    {% else %}
+    <link rel="canonical" href="{{ request.url }}">
+    {% endif %}
+
+    {% if description %}
+    <meta name="description" content="{{ description|truncate(150) }}" />
+    {% else %}
+    <meta name="description" content="HSHR is a directory of homebirth providers in Hampton Roads (Virginia Beach, Norfolk, Chesapeake, Newport News, Hampton, Portsmouth, Suffolk)." />
+    {% endif %}
 
     <script src="https://kit.fontawesome.com/dca2a3f046.js" crossorigin="anonymous"></script>
 

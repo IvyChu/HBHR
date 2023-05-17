@@ -23,7 +23,7 @@ def home():
 
 @main.route("/about")
 def about():
-    return render_template('about.html', title='About')
+    return render_template('about.html', title='About HSHR')
 
 
 @main.route("/privacy")
@@ -37,7 +37,12 @@ def tos():
 
 @main.route('/search')
 def search():
-    search_terms = request.args.get('q').lower()
+    search_terms = request.args.get('q')
+
+    if search_terms:
+        search_terms = search_terms.lower()
+    else:
+        search_terms = ""
 
     # Search the Services table for service names and descriptions
     services = Service.query.filter(or_(
@@ -88,7 +93,7 @@ def service(service_id):
             businesses.append(business)
 
     # Return a page displaying the businesses associated with the service and the service information.
-    return render_template('search_results.html', businesses=businesses, service=service, title=service.name)
+    return render_template('search_results.html', businesses=businesses, service=service, title=service.name, description=service.description)
 
 
 @main.route('/others')
@@ -176,7 +181,7 @@ def business(business_url):
         if isinstance(current_user, AnonymousUser) or not (current_user.is_owner(business.id) or current_user.has_role('admin')):
             return render_template('errors/404.html')
 
-    return render_template('business.html', title=business.name, business=business)
+    return render_template('business.html', title=business.name, business=business, description=business.description)
 
 @main.route("/business/<int:business_id>/status", methods=['PUT'])
 def toggle_business_status(business_id):

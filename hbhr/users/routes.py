@@ -37,7 +37,7 @@ def account():
 @users.route("/dashboard", methods=['GET'])
 @login_required
 def dashboard():
-    return render_template('dashboard.html', title='Account',
+    return render_template('dashboard.html', title='Dashboard',
                            user=current_user)
 
 
@@ -47,4 +47,4 @@ def profile(username):
     if not user:
         return render_template('errors/404.html')
 
-    return render_template('profile_page.html', user=user)
+    return render_template('profile_page.html', user=user, title=user.display_name, description=user.notes)
