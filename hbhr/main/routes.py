@@ -117,6 +117,8 @@ def others():
 @login_required
 def new_business():
     form = BusinessForm()
+
+    log.info(f"{current_user.id}: new_business")
     
     if form.validate_on_submit():
         business = Business(name=form.name.data, email=form.email.data, webpage=form.webpage.data, description=form.description.data)
@@ -125,7 +127,7 @@ def new_business():
         db.session.add(business)
         db.session.commit()
 
-        log.info(f"Created business {business.id}")
+        log.info(f"{current_user.id}: Created business {business.id}")
 
         flash(f'Your business {business.name} has been created', 'success')
         return redirect(url_for('main.business', business_url=business.url))
@@ -136,12 +138,14 @@ def new_business():
 @main.route("/business/<int:business_id>/edit", methods=['GET', 'POST'])
 @login_required
 def edit_business(business_id):
+    log.info(f"{current_user.id}: edit_business id: {business_id}")
+
     business = Business.query.get_or_404(business_id)
     if not (current_user.is_owner(business_id) or current_user.has_role('admin')):
         flash("You don't have the permission to edit this business. Check with the business owner or admin.","warning")
         return redirect(url_for('main.business', business_url=business.id))
 
-    form = BusinessForm()
+    form = BusinessForm(business_id=business.id)
 
     if form.validate_on_submit():
         if form.image_file.data:
@@ -157,6 +161,7 @@ def edit_business(business_id):
         business.description = form.description.data
         db.session.commit()
         flash('Your business has been updated!', 'success')
+        log.info(f"{current_user.id}: edit_business id: {business_id} - update success")
         return redirect(url_for('main.business', business_url=business.url))
     elif request.method == 'GET':
         form.name.data = business.name
@@ -184,15 +189,22 @@ def business(business_url):
     return render_template('business.html', title=business.name, business=business, description=business.description)
 
 @main.route("/business/<int:business_id>/status", methods=['PUT'])
+@login_required
 def toggle_business_status(business_id):
     # Get the business with the given ID or return a 404 error if not found
     business = Business.query.get_or_404(business_id)
+
+    # Check if the user is authorized to make this change
+    if not (current_user.is_owner(business.id) or current_user.has_role('admin')):
+        return render_template('errors/404.html')
     
     # Toggle the status of the service (i.e. change from active to inactive or vice versa)
     business.toggle_status()
     
     # Commit the changes to the database
     db.session.commit()
+
+    log.info(f"{current_user.id}: toggle_business_status id: {business_id} - update success")
     
     # Render the template for the updated service row
     return render_template('business_status_button.html', business=business)
@@ -365,6 +377,8 @@ def edit_services(business_id):
 
         # Commit changes to the database        
         db.session.commit()
+
+        log.info(f"{current_user.id}: edit_services id: {business_id} - update success")
 
         return render_template('services_list.html', business=business)
 
