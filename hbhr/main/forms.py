@@ -3,6 +3,7 @@ from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, SubmitField, TextAreaField, ValidationError, SelectMultipleField, widgets
 from wtforms.validators import InputRequired, Length, URL, Email, Optional
 from hbhr.utils import check_picture_size
+from hbhr.models import Business
 import phonenumbers 
 
 class BusinessForm(FlaskForm):
@@ -20,6 +21,16 @@ class BusinessForm(FlaskForm):
         check = check_picture_size(image_file.data,400,400)
         if check:
             raise ValidationError("Uploaded picture is too small. Minimum dimensions are 400x400 pixels.") 
+        
+    def __init__(self, business_id=None, *args, **kwargs):
+        super(BusinessForm, self).__init__(*args, **kwargs)
+        self.business_id = business_id
+
+    def validate_email(self, email):
+        business = Business.query.filter_by(email=email.data).first()
+        if business:
+            if not business.id == self.business_id:
+                raise ValidationError('Email is already in use by another business.')
 
 
 class AddressForm(FlaskForm):
