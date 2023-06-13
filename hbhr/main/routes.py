@@ -188,6 +188,7 @@ def business(business_url):
     if business.status == business.INACTIVE:
         if isinstance(current_user, AnonymousUser) or not (current_user.is_owner(business.id) or current_user.has_role('admin')):
             return render_template('errors/404.html')
+        flash(f'Your business is hidden. Click the green "Publish business" button below when ready.', 'warning')
 
     return render_template('business.html', title=business.name, business=business, description=business.description)
 
