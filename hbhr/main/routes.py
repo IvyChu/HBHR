@@ -6,6 +6,7 @@ from hbhr.main.forms import BusinessForm, AddressForm, PhoneForm, LinkServicesFo
 from hbhr.utils import save_thumbnail
 import phonenumbers 
 from sqlalchemy import or_
+from bleach import clean
 
 main = Blueprint('main', __name__)
 
@@ -40,9 +41,11 @@ def search():
     search_terms = request.args.get('q')
 
     if search_terms:
-        search_terms = search_terms.lower()
+        search_terms = clean(search_terms.lower())
     else:
         search_terms = ""
+
+    log.debug(f"search: {search_terms}")
 
     # Search the Services table for service names and descriptions
     services = Service.query.filter(or_(
@@ -185,6 +188,7 @@ def business(business_url):
     if business.status == business.INACTIVE:
         if isinstance(current_user, AnonymousUser) or not (current_user.is_owner(business.id) or current_user.has_role('admin')):
             return render_template('errors/404.html')
+        flash(f'Your business is hidden. Click the green "Publish business" button below when ready.', 'warning')
 
     return render_template('business.html', title=business.name, business=business, description=business.description)
 
