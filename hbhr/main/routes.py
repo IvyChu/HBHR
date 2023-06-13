@@ -6,6 +6,7 @@ from hbhr.main.forms import BusinessForm, AddressForm, PhoneForm, LinkServicesFo
 from hbhr.utils import save_thumbnail
 import phonenumbers 
 from sqlalchemy import or_
+from bleach import clean
 
 main = Blueprint('main', __name__)
 
@@ -40,9 +41,11 @@ def search():
     search_terms = request.args.get('q')
 
     if search_terms:
-        search_terms = search_terms.lower()
+        search_terms = clean(search_terms.lower())
     else:
         search_terms = ""
+
+    log.debug(f"search: {search_terms}")
 
     # Search the Services table for service names and descriptions
     services = Service.query.filter(or_(
