@@ -1,15 +1,16 @@
-from flask import render_template, request, Blueprint, flash, redirect, url_for, abort, current_app
+from flask import render_template, request, Blueprint, flash, redirect, url_for, abort, current_app, session
 from flask_security import current_user, login_required, AnonymousUser
 from hbhr import log, db
 from hbhr.models import Service, Business, Address, Phone
 from hbhr.main.forms import BusinessForm, AddressForm, PhoneForm, LinkServicesForm
-from hbhr.utils import save_thumbnail
+from hbhr.utils import save_thumbnail, get_search_seed
 import phonenumbers 
-from sqlalchemy import or_
+from sqlalchemy import or_, text
 from bleach import clean
 
 main = Blueprint('main', __name__)
 
+PER_PAGE = 4
 
 @main.route("/")
 @main.route("/home")
@@ -47,33 +48,60 @@ def search():
 
     log.debug(f"search: {search_terms}")
 
-    # Search the Services table for service names and descriptions
-    services = Service.query.filter(or_(
-        Service.name.ilike(f'%{search_terms}%'),
-        Service.description.ilike(f'%{search_terms}%'))
-    ).all()
+    page = request.args.get('page') or ''
+    
+    if page.isdigit():
+        page = int(page)
+    else:
+        page = 1
 
-    businesses = []
+    sql = text(f'''
+        select setseed({get_search_seed()});
+        select b.*
+        from (
+            SELECT DISTINCT b.* 
+            FROM public.business AS b
+            JOIN public.service_business AS sb ON b.id = sb.business_id
+            JOIN public.service AS s ON sb.service_id = s.id
+            where (s.name ilike '%{search_terms}%' or s.description ilike '%{search_terms}%' or b.name ilike '%{search_terms}%')
+                and b.status = 'active' and s.status = 'active'
+        ) AS b
+        JOIN (
+        SELECT random() AS rand
+        ) AS r ON 1 = 1
+        ORDER BY r.rand
+        LIMIT {PER_PAGE} OFFSET {page - 1};
+    ''')
 
-    # Get the businesses that provide the services that match the search terms
-    for service in services:
-        if service.is_active():
-            for business in service.businesses:
-                if business.is_active():
-                    businesses.append(business)
+    businesses = db.session.query(Business).from_statement(sql).all()
 
-    log.debug(businesses)
+    # # Search the Services table for service names and descriptions
+    # services = Service.query.filter(or_(
+    #     Service.name.ilike(f'%{search_terms}%'),
+    #     Service.description.ilike(f'%{search_terms}%'))
+    # ).all()
 
-    # Search the Business table for business names that match the search terms
-    businesses += Business.query.filter(Business.name.ilike(f'%{search_terms}%')).all()
+    # businesses = []
 
-    # Remove duplicates
-    businesses = list(set(businesses))
+    # # Get the businesses that provide the services that match the search terms
+    # for service in services:
+    #     if service.is_active():
+    #         for business in service.businesses:
+    #             if business.is_active():
+    #                 businesses.append(business)
 
-    # Remove inactive
-    for business in businesses:
-        if not business.is_active():
-            businesses.remove(business)
+    # log.debug(businesses)
+
+    # # Search the Business table for business names that match the search terms
+    # businesses += Business.query.filter(Business.name.ilike(f'%{search_terms}%')).all()
+
+    # # Remove duplicates
+    # businesses = list(set(businesses))
+
+    # # Remove inactive
+    # for business in businesses:
+    #     if not business.is_active():
+    #         businesses.remove(business)
 
     return render_template('search_results.html', businesses=businesses, search_terms=search_terms, title='Search results')
 
