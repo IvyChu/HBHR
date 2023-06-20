@@ -75,34 +75,6 @@ def search():
 
     businesses = db.session.query(Business).from_statement(sql).all()
 
-    # # Search the Services table for service names and descriptions
-    # services = Service.query.filter(or_(
-    #     Service.name.ilike(f'%{search_terms}%'),
-    #     Service.description.ilike(f'%{search_terms}%'))
-    # ).all()
-
-    # businesses = []
-
-    # # Get the businesses that provide the services that match the search terms
-    # for service in services:
-    #     if service.is_active():
-    #         for business in service.businesses:
-    #             if business.is_active():
-    #                 businesses.append(business)
-
-    # log.debug(businesses)
-
-    # # Search the Business table for business names that match the search terms
-    # businesses += Business.query.filter(Business.name.ilike(f'%{search_terms}%')).all()
-
-    # # Remove duplicates
-    # businesses = list(set(businesses))
-
-    # # Remove inactive
-    # for business in businesses:
-    #     if not business.is_active():
-    #         businesses.remove(business)
-
     return render_template('search_results.html', businesses=businesses, search_terms=search_terms, title='Search results')
 
 
@@ -118,10 +90,31 @@ def service(service_id):
     # Create an empty list to hold the businesses associated with the service.
     businesses = []
 
-    # Loop through all the businesses associated with the service and append the active ones to the list.
-    for business in service.businesses:
-        if business.is_active():
-            businesses.append(business)
+    page = request.args.get('page') or ''
+    
+    if page.isdigit():
+        page = int(page)
+    else:
+        page = 1
+
+    sql = text(f'''
+        select setseed({get_search_seed()});
+        select b.*
+        from (
+            SELECT DISTINCT b.* 
+            FROM public.business AS b
+            JOIN public.service_business AS sb ON b.id = sb.business_id
+            JOIN public.service AS s ON sb.service_id = s.id
+            where s.id = {service_id} and b.status = 'active'
+        ) AS b
+        JOIN (
+        SELECT random() AS rand
+        ) AS r ON 1 = 1
+        ORDER BY r.rand
+        LIMIT {PER_PAGE} OFFSET {page - 1};
+    ''')
+
+    businesses = db.session.query(Business).from_statement(sql).all()
 
     # Return a page displaying the businesses associated with the service and the service information.
     return render_template('search_results.html', businesses=businesses, service=service, title=service.name, description=service.description)
