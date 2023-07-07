@@ -1,4 +1,4 @@
-from flask import render_template, request, Blueprint, flash, redirect, url_for, abort, current_app, session
+from flask import render_template, request, Blueprint, flash, redirect, url_for, abort, current_app
 from flask_security import current_user, login_required, AnonymousUser
 from hbhr import log, db
 from hbhr.models import Service, Business, Address, Phone
@@ -7,10 +7,10 @@ from hbhr.utils import save_thumbnail, get_search_seed
 import phonenumbers 
 from sqlalchemy import or_, text
 from bleach import clean
+import paginate
 
 main = Blueprint('main', __name__)
 
-PER_PAGE = 4
 
 @main.route("/")
 @main.route("/home")
@@ -70,12 +70,23 @@ def search():
         SELECT random() AS rand
         ) AS r ON 1 = 1
         ORDER BY r.rand
-        LIMIT {PER_PAGE} OFFSET {page - 1};
+        ;
     ''')
 
     businesses = db.session.query(Business).from_statement(sql).all()
 
-    return render_template('search_results.html', businesses=businesses, search_terms=search_terms, title='Search results')
+    businesses = paginate.Page(businesses, page=page, items_per_page=current_app.config['RESULTS_PER_PAGE'],
+                               url_maker=lambda p: f"{url_for('main.search')}?q={search_terms}&page={p}")
+
+    # Create links for pages
+    pager_links = businesses.pager(link_attr={ 'class':'button is-primary is-light is-small' },
+                                   curpage_attr={ 'class':'button is-primary is-small' })
+
+    # Display something as a serch term on the template, and also make the header load
+    if not search_terms:
+        search_terms = 'Everything'
+
+    return render_template('search_results.html', businesses=businesses, search_terms=search_terms, title='Search results', pager_links=pager_links)
 
 
 @main.route('/service/<int:service_id>')
@@ -111,13 +122,20 @@ def service(service_id):
         SELECT random() AS rand
         ) AS r ON 1 = 1
         ORDER BY r.rand
-        LIMIT {PER_PAGE} OFFSET {page - 1};
+        ;
     ''')
 
     businesses = db.session.query(Business).from_statement(sql).all()
 
+    businesses = paginate.Page(businesses, page=page, items_per_page=current_app.config['RESULTS_PER_PAGE'],
+                               url_maker=lambda p: f"{url_for('main.service', service_id=service_id)}?&page={p}")
+
+    # Create links for pages
+    pager_links = businesses.pager(link_attr={ 'class':'button is-primary is-light is-small' },
+                                   curpage_attr={ 'class':'button is-primary is-small' })
+
     # Return a page displaying the businesses associated with the service and the service information.
-    return render_template('search_results.html', businesses=businesses, service=service, title=service.name, description=service.description)
+    return render_template('search_results.html', businesses=businesses, service=service, title=service.name, description=service.description, pager_links=pager_links)
 
 
 @main.route('/others')
