@@ -3,10 +3,11 @@ from flask_security import current_user, login_required, AnonymousUser
 from hbhr import log, db
 from hbhr.models import Service, Business, Address, Phone
 from hbhr.main.forms import BusinessForm, AddressForm, PhoneForm, LinkServicesForm
-from hbhr.utils import save_thumbnail
+from hbhr.utils import save_thumbnail, get_search_seed
 import phonenumbers 
-from sqlalchemy import or_
+from sqlalchemy import or_, text
 from bleach import clean
+import paginate
 
 main = Blueprint('main', __name__)
 
@@ -47,35 +48,45 @@ def search():
 
     log.debug(f"search: {search_terms}")
 
-    # Search the Services table for service names and descriptions
-    services = Service.query.filter(or_(
-        Service.name.ilike(f'%{search_terms}%'),
-        Service.description.ilike(f'%{search_terms}%'))
-    ).all()
+    page = request.args.get('page') or ''
+    
+    if page.isdigit():
+        page = int(page)
+    else:
+        page = 1
 
-    businesses = []
+    sql = text(f'''
+        select setseed({get_search_seed()});
+        select b.*
+        from (
+            SELECT DISTINCT b.* 
+            FROM public.business AS b
+            JOIN public.service_business AS sb ON b.id = sb.business_id
+            JOIN public.service AS s ON sb.service_id = s.id
+            where (s.name ilike '%{search_terms}%' or s.description ilike '%{search_terms}%' or b.name ilike '%{search_terms}%')
+                and b.status = 'active' and s.status = 'active'
+        ) AS b
+        JOIN (
+        SELECT random() AS rand
+        ) AS r ON 1 = 1
+        ORDER BY r.rand
+        ;
+    ''')
 
-    # Get the businesses that provide the services that match the search terms
-    for service in services:
-        if service.is_active():
-            for business in service.businesses:
-                if business.is_active():
-                    businesses.append(business)
+    businesses = db.session.query(Business).from_statement(sql).all()
 
-    log.debug(businesses)
+    businesses = paginate.Page(businesses, page=page, items_per_page=current_app.config['RESULTS_PER_PAGE'],
+                               url_maker=lambda p: f"{url_for('main.search')}?q={search_terms}&page={p}")
 
-    # Search the Business table for business names that match the search terms
-    businesses += Business.query.filter(Business.name.ilike(f'%{search_terms}%')).all()
+    # Create links for pages
+    pager_links = businesses.pager(link_attr={ 'class':'button is-primary is-light is-small' },
+                                   curpage_attr={ 'class':'button is-primary is-small' })
 
-    # Remove duplicates
-    businesses = list(set(businesses))
+    # Display something as a serch term on the template, and also make the header load
+    if not search_terms:
+        search_terms = 'Everything'
 
-    # Remove inactive
-    for business in businesses:
-        if not business.is_active():
-            businesses.remove(business)
-
-    return render_template('search_results.html', businesses=businesses, search_terms=search_terms, title='Search results')
+    return render_template('search_results.html', businesses=businesses, search_terms=search_terms, title='Search results', pager_links=pager_links)
 
 
 @main.route('/service/<int:service_id>')
@@ -90,13 +101,41 @@ def service(service_id):
     # Create an empty list to hold the businesses associated with the service.
     businesses = []
 
-    # Loop through all the businesses associated with the service and append the active ones to the list.
-    for business in service.businesses:
-        if business.is_active():
-            businesses.append(business)
+    page = request.args.get('page') or ''
+    
+    if page.isdigit():
+        page = int(page)
+    else:
+        page = 1
+
+    sql = text(f'''
+        select setseed({get_search_seed()});
+        select b.*
+        from (
+            SELECT DISTINCT b.* 
+            FROM public.business AS b
+            JOIN public.service_business AS sb ON b.id = sb.business_id
+            JOIN public.service AS s ON sb.service_id = s.id
+            where s.id = {service_id} and b.status = 'active'
+        ) AS b
+        JOIN (
+        SELECT random() AS rand
+        ) AS r ON 1 = 1
+        ORDER BY r.rand
+        ;
+    ''')
+
+    businesses = db.session.query(Business).from_statement(sql).all()
+
+    businesses = paginate.Page(businesses, page=page, items_per_page=current_app.config['RESULTS_PER_PAGE'],
+                               url_maker=lambda p: f"{url_for('main.service', service_id=service_id)}?&page={p}")
+
+    # Create links for pages
+    pager_links = businesses.pager(link_attr={ 'class':'button is-primary is-light is-small' },
+                                   curpage_attr={ 'class':'button is-primary is-small' })
 
     # Return a page displaying the businesses associated with the service and the service information.
-    return render_template('search_results.html', businesses=businesses, service=service, title=service.name, description=service.description)
+    return render_template('search_results.html', businesses=businesses, service=service, title=service.name, description=service.description, pager_links=pager_links)
 
 
 @main.route('/others')

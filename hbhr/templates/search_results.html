@@ -48,6 +48,9 @@
                     {% for business in businesses %}
                     {% include 'business_short.html' %}
                     {% endfor %}
+
+                    {{ pager_links|safe }}
+
                 {% else %}
                 <p>Sorry, there are no businesses listed that match your search.</p>
                 {% endif %}

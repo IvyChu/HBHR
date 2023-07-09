@@ -3,7 +3,9 @@ import secrets
 import re
 import unicodedata
 from PIL import Image
-from flask import current_app
+from flask import current_app, session
+from random import random
+
 #from hbhr import log
 
 def slugify(value, allow_unicode=False):
@@ -104,3 +106,10 @@ def save_photo(form_picture):
     #log.debug(f"Saved pic {picture_path}")
 
     return (picture_fn, thumbnail_fn)
+
+
+def get_search_seed():
+    if 'search_seed' not in session:
+        session['search_seed'] = random()
+    session.permanent = True
+    return session['search_seed']
