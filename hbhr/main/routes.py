@@ -66,10 +66,7 @@ def search():
             where (s.name ilike '%{search_terms}%' or s.description ilike '%{search_terms}%' or b.name ilike '%{search_terms}%')
                 and b.status = 'active' and s.status = 'active'
         ) AS b
-        JOIN (
-        SELECT random() AS rand
-        ) AS r ON 1 = 1
-        ORDER BY r.rand
+        ORDER BY random()
         ;
     ''')
 
@@ -118,10 +115,7 @@ def service(service_id):
             JOIN public.service AS s ON sb.service_id = s.id
             where s.id = {service_id} and b.status = 'active'
         ) AS b
-        JOIN (
-        SELECT random() AS rand
-        ) AS r ON 1 = 1
-        ORDER BY r.rand
+        ORDER BY random()
         ;
     ''')
 
