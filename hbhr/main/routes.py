@@ -27,6 +27,9 @@ def home():
 def about():
     return render_template('about.html', title='About HSHR')
 
+@main.route("/help")
+def help():
+    return render_template('help.html', title='Help')
 
 @main.route("/privacy")
 def privacy():
