@@ -13,7 +13,7 @@ import phonenumbers
 class User(db.Model, UserMixin):
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(20), unique=True, nullable=False)
+    username = db.Column(db.String(32), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     image_file = db.Column(db.String(60), nullable=False, default=f'default{randrange(10)}.jpg')
     password = db.Column(db.String(60), nullable=False)

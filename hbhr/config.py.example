@@ -33,6 +33,9 @@ class Config(dict):
     SECURITY_RECOVERABLE = True
     SECURITY_CHANGEABLE = True
     SECURITY_USERNAME_ENABLE = True
+    SECURITY_USERNAME_REQUIRED = True
+    SECURITY_USERNAME_MIN_LENGTH = 4
+    SECURITY_USERNAME_MAX_LENGTH = 32
     SECURITY_SEND_REGISTER_EMAIL = True
 
     # SQLALCHEMY_DATABASE_URI - this should be stored in the environment variable for security reasons
