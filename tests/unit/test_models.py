@@ -28,3 +28,27 @@ def test_new_service():
     service = Service(name="Midwifery", description="Helping mothers give brith")
     assert service.name == "Midwifery"
     assert service.description == "Helping mothers give brith"
+
+def test_new_address():
+    """
+    GIVEN a Address model
+    WHEN a new Address is created
+    THEN check the address, city, state, zip fields are defined correctly
+    """
+    addr = Address(address="123 My Way", city="Merlin", state="New York", zip="12345")
+    assert addr.address == "123 My Way"
+    assert addr.city == "Merlin"
+    assert addr.state == "New York"
+    assert addr.zip == "12345"
+
+def test_new_phone():
+    """
+    GIVEN a Phone model
+    WHEN a new Phone is created
+    THEN check the country_code, phone_number, extension fields are defined correctly
+    """
+    phone = Phone(country_code="+1", phone_number="1234567890",extension="3241")
+    assert phone.country_code == "+1"
+    assert phone.phone_number == "1234567890"
+    assert phone.extension == "3241"
+    
