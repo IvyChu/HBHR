@@ -29,7 +29,7 @@ def about():
 
 @main.route("/help")
 def help():
-    return render_template('help.html', title='Help')
+    return render_template('help.html', title='Help - Your Questions Answered')
 
 @main.route("/privacy")
 def privacy():
